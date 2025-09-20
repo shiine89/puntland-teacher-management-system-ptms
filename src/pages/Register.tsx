@@ -129,7 +129,13 @@ const Register = () => {
   };
 
   const getSubjectOptions = () => {
-    return formData.education.toLowerCase() === 'university' ? universityFaculties : schoolSubjects;
+    if (formData.education.toLowerCase() === 'university') {
+      return universityFaculties;
+    } else if (formData.education.toLowerCase() === 'other') {
+      return []; // No predefined options for "other"
+    } else {
+      return schoolSubjects;
+    }
   };
 
   const handleFileChange = (field: string, file: File | null) => {
@@ -389,32 +395,59 @@ const Register = () => {
               {/* Teaching Subjects */}
               <div className="space-y-2">
                 <Label>Teaching Subjects *</Label>
-                {selectedSubjects.map((subject, index) => (
-                  <div key={index} className="flex gap-2 items-end">
-                    <div className="flex-1">
-                      <Select value={subject} onValueChange={(value) => handleSubjectChange(index, value)}>
-                        <SelectTrigger className="ptms-input">
-                          <SelectValue placeholder="Select subject" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {getSubjectOptions().map((option) => (
-                            <SelectItem key={option} value={option}>{option}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                {formData.education.toLowerCase() === 'other' ? (
+                  // Text inputs for custom subjects when education is "other"
+                  selectedSubjects.map((subject, index) => (
+                    <div key={index} className="flex gap-2 items-end">
+                      <div className="flex-1">
+                        <Input
+                          placeholder="Enter your teaching subject"
+                          value={subject}
+                          onChange={(e) => handleSubjectChange(index, e.target.value)}
+                          className="ptms-input"
+                        />
+                      </div>
+                      {selectedSubjects.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => removeSubject(index)}
+                        >
+                          Remove
+                        </Button>
+                      )}
                     </div>
-                    {selectedSubjects.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => removeSubject(index)}
-                      >
-                        Remove
-                      </Button>
-                    )}
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  // Dropdown selects for predefined subjects
+                  selectedSubjects.map((subject, index) => (
+                    <div key={index} className="flex gap-2 items-end">
+                      <div className="flex-1">
+                        <Select value={subject} onValueChange={(value) => handleSubjectChange(index, value)}>
+                          <SelectTrigger className="ptms-input">
+                            <SelectValue placeholder="Select subject" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {getSubjectOptions().map((option) => (
+                              <SelectItem key={option} value={option}>{option}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {selectedSubjects.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => removeSubject(index)}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </div>
+                  ))
+                )}
                 {selectedSubjects.length < 5 && (
                   <Button
                     type="button"
