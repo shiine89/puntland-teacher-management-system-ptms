@@ -357,11 +357,11 @@ const Register = () => {
                       <SelectValue placeholder="Select education level" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="secondary">Secondary</SelectItem>
-                      <SelectItem value="diploma">Diploma</SelectItem>
+                      <SelectItem value="primary">Primary</SelectItem>
+                      <SelectItem value="seondary">Secondary</SelectItem>
                       <SelectItem value="university">University</SelectItem>
-                      <SelectItem value="masters">Masters</SelectItem>
-                      <SelectItem value="phd">PhD</SelectItem>
+                      <SelectItem value="other">other</SelectItem>
+                
                     </SelectContent>
                   </Select>
                 </div>
