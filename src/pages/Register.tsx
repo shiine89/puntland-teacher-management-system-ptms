@@ -77,7 +77,7 @@ const Register = () => {
 
   const handleEducationChange = (value: string) => {
     handleInputChange('education', value);
-    const isUniversity = value === 'University';
+    const isUniversity = value.toLowerCase() === 'university';
     
     // Reset subjects when changing education level
     setSelectedSubjects([""]);
@@ -99,7 +99,7 @@ const Register = () => {
     newSubjects[index] = value;
     setSelectedSubjects(newSubjects);
     
-    updateMajorSubjectsVisibility(formData.education === 'University', newSubjects);
+    updateMajorSubjectsVisibility(formData.education.toLowerCase() === 'university', newSubjects);
   };
 
   const addSubject = () => {
@@ -111,7 +111,7 @@ const Register = () => {
   const removeSubject = (index: number) => {
     const newSubjects = selectedSubjects.filter((_, i) => i !== index);
     setSelectedSubjects(newSubjects);
-    updateMajorSubjectsVisibility(formData.education === 'University', newSubjects);
+    updateMajorSubjectsVisibility(formData.education.toLowerCase() === 'university', newSubjects);
   };
 
   const updateMajorSubjectsVisibility = (isUniversity: boolean, subjects: string[]) => {
@@ -129,7 +129,7 @@ const Register = () => {
   };
 
   const getSubjectOptions = () => {
-    return formData.education === 'University' ? universityFaculties : schoolSubjects;
+    return formData.education.toLowerCase() === 'university' ? universityFaculties : schoolSubjects;
   };
 
   const handleFileChange = (field: string, file: File | null) => {
@@ -352,7 +352,7 @@ const Register = () => {
                     <GraduationCap className="w-4 h-4" />
                     Education Level *
                   </Label>
-                  <Select value={formData.education} onValueChange={(value) => handleInputChange('education', value)}>
+                  <Select value={formData.education} onValueChange={handleEducationChange}>
                     <SelectTrigger className="ptms-input">
                       <SelectValue placeholder="Select education level" />
                     </SelectTrigger>
