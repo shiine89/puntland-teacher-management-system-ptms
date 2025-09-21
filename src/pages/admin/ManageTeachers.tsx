@@ -57,10 +57,10 @@ const ManageTeachers = () => {
   };
 
   const filteredTeachers = teachers.filter(teacher =>
-    teacher.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    teacher.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    teacher.subjects.some(subject => 
-      subject.toLowerCase().includes(searchTerm.toLowerCase())
+    (teacher.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (teacher.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (teacher.subjects || []).some(subject => 
+      (subject?.toLowerCase() || '').includes(searchTerm.toLowerCase())
     )
   );
 

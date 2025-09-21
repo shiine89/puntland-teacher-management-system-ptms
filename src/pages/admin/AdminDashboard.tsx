@@ -44,7 +44,7 @@ const AdminDashboard = () => {
       color: "text-primary",
       bgColor: "bg-primary/10",
       description: "All registered teachers in the system",
-      link: "/admin/manage-teachers"
+      link: "/admin/teachers/manage"
     },
     {
       title: "Listed Subjects",
@@ -53,7 +53,7 @@ const AdminDashboard = () => {
       color: "text-success",
       bgColor: "bg-success/10",
       description: "Available subjects for teaching",
-      link: "/admin/manage-subjects"
+      link: "/admin/subjects/manage"
     },
     {
       title: "New Teachers (30 days)",
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
       color: "text-secondary",
       bgColor: "bg-secondary/10",
       description: "Recently registered teachers",
-      link: "/admin/manage-teachers?filter=recent"
+      link: "/admin/teachers/manage?filter=recent"
     },
     {
       title: "Active Profiles",
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
       color: "text-primary",
       bgColor: "bg-primary/10",
       description: "Currently active teacher profiles",
-      link: "/admin/manage-teachers"
+      link: "/admin/teachers/manage"
     }
   ];
 
