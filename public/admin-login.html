@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - PTMS</title>
+    <meta name="description" content="Admin login portal for the Puntland Teacher Management System. Secure access for administrators to manage teacher profiles and system settings.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="css/ptms-styles.css">
+</head>
+<body class="min-h-screen bg-gradient-primary">
+    <!-- Header -->
+    <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <a href="index.html" class="flex items-center gap-3 text-white text-decoration-none">
+                <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                <h1 class="text-2xl font-bold tracking-wide">PTMS</h1>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex items-center justify-center min-h-screen p-6">
+        <div class="w-full max-w-md">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 shadow-2xl animate-fade-in">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="shield-check" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Admin Login</h2>
+                    <p class="text-white/80">Access the PTMS administration panel</p>
+                </div>
+
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-white mb-2">
+                            Username
+                        </label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3 top-3 w-5 h-5 text-white/60"></i>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-white mb-2">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-3 w-5 h-5 text-white/60"></i>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                class="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/20"
+                                required
+                            />
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="absolute right-3 top-3 w-5 h-5 text-white/60 hover:text-white/80"
+                            >
+                                <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input
+                                type="checkbox"
+                                class="rounded border-white/20 text-blue-600 shadow-sm focus:border-white/40 focus:ring focus:ring-white/20 focus:ring-opacity-50"
+                            />
+                            <span class="ml-2 text-sm text-white/80">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-white/80 hover:text-white text-decoration-none">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full bg-white text-blue-600 py-3 px-4 rounded-lg font-semibold hover:bg-white/90 transition-all duration-200 transform hover:scale-105"
+                    >
+                        <i data-lucide="log-in" class="w-5 h-5 mr-2 inline"></i>
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-white/60 text-sm mb-4">Need help accessing your account?</p>
+                    <a href="contact.html" class="text-white/80 hover:text-white text-sm text-decoration-none">
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 animate-slide-up">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="shield-alert" class="w-5 h-5 text-yellow-300 mt-0.5"></i>
+                    <div>
+                        <h4 class="text-white font-medium mb-1">Security Notice</h4>
+                        <p class="text-white/80 text-sm">
+                            This is a secure area. All activities are monitored and logged. 
+                            Only authorized personnel should access this system.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/ptms-common.js"></script>
+    <script>
+        // Password visibility toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const password = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (password.type === 'password') {
+                password.type = 'text';
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                password.type = 'password';
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+            
+            lucide.createIcons();
+        });
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple demo authentication (in real app, this would be server-side)
+            if (username === 'admin' && password === 'admin123') {
+                showToast('Login successful! Redirecting to dashboard...');
+                
+                // Set session
+                localStorage.setItem('adminSession', JSON.stringify({
+                    username: username,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                // Redirect to admin dashboard
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 1500);
+            } else {
+                showToast('Invalid username or password. Please try again.', true);
+            }
+        });
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const session = localStorage.getItem('adminSession');
+            if (session) {
+                const sessionData = JSON.parse(session);
+                const loginTime = new Date(sessionData.loginTime);
+                const now = new Date();
+                const timeDiff = now - loginTime;
+                
+                // If session is less than 24 hours old, redirect to dashboard
+                if (timeDiff < 24 * 60 * 60 * 1000) {
+                    window.location.href = 'admin-dashboard.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

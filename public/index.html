@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PTMS - Puntland Teacher Management System</title>
+    <meta name="description" content="Comprehensive digital platform for registering, managing, and tracking teacher profiles across Puntland. Enhancing efficiency, accuracy, and accessibility in education management.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="css/ptms-styles.css">
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="ptms-header">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 text-white text-decoration-none">
+                <i data-lucide="graduation-cap" class="w-8 h-8"></i>
+                <h1 class="text-2xl font-bold tracking-wide">PTMS</h1>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="text-white hover:text-yellow-200 transition-colors font-medium text-decoration-none">Home</a>
+                <a href="about.html" class="text-white hover:text-yellow-200 transition-colors font-medium text-decoration-none">About</a>
+                <a href="teachers.html" class="text-white hover:text-yellow-200 transition-colors font-medium text-decoration-none">Listed Teachers</a>
+                <a href="register.html" class="text-white hover:text-yellow-200 transition-colors font-medium text-decoration-none">Register</a>
+                <a href="contact.html" class="text-white hover:text-yellow-200 transition-colors font-medium text-decoration-none">Contact</a>
+                <a href="admin-login.html" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-4 py-2 rounded-lg text-decoration-none transition-all">Admin Login</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button
+                id="menuButton"
+                class="md:hidden text-white p-2"
+                onclick="toggleMobileMenu()"
+                aria-expanded="false"
+            >
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobileMenu" class="hidden md:hidden bg-blue-700 mt-4 p-4 rounded-lg mx-4">
+            <nav class="flex flex-col gap-4">
+                <a href="index.html" class="text-white hover:text-yellow-200 transition-colors py-2 text-decoration-none" onclick="closeMobileMenu()">Home</a>
+                <a href="about.html" class="text-white hover:text-yellow-200 transition-colors py-2 text-decoration-none" onclick="closeMobileMenu()">About</a>
+                <a href="teachers.html" class="text-white hover:text-yellow-200 transition-colors py-2 text-decoration-none" onclick="closeMobileMenu()">Listed Teachers</a>
+                <a href="register.html" class="text-white hover:text-yellow-200 transition-colors py-2 text-decoration-none" onclick="closeMobileMenu()">Register</a>
+                <a href="contact.html" class="text-white hover:text-yellow-200 transition-colors py-2 text-decoration-none" onclick="closeMobileMenu()">Contact</a>
+                <a href="admin-login.html" class="text-white hover:text-yellow-200 transition-colors py-2 text-decoration-none" onclick="closeMobileMenu()">Admin Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-20 bg-gradient-primary overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in">
+                    <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                        Puntland Teacher
+                        <br>
+                        <span class="text-yellow-300">Management System</span>
+                    </h1>
+                    
+                    <p class="text-xl text-white/90 mb-8 leading-relaxed">
+                        A comprehensive digital platform for registering, managing, and tracking teacher profiles across Puntland. 
+                        Enhancing efficiency, accuracy, and accessibility in education management.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="teachers.html" class="ptms-btn-secondary">
+                            View Teachers
+                            <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                        </a>
+                        <a href="register.html" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-6 py-3 rounded-lg font-medium transition-all text-decoration-none">
+                            Register as Teacher
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="animate-slide-up">
+                    <img
+                        src="src/assets/ptms-hero.jpg"
+                        alt="PTMS Hero"
+                        class="w-full h-auto rounded-2xl shadow-2xl border border-white/20"
+                    />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="ptms-card text-center animate-bounce-in">
+                    <i data-lucide="users" class="w-10 h-10 mx-auto mb-4 text-blue-600"></i>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">1,247</h3>
+                    <p class="text-gray-600 font-medium">Registered Teachers</p>
+                </div>
+                
+                <div class="ptms-card text-center animate-bounce-in">
+                    <i data-lucide="graduation-cap" class="w-10 h-10 mx-auto mb-4 text-green-600"></i>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">45</h3>
+                    <p class="text-gray-600 font-medium">Subjects Covered</p>
+                </div>
+                
+                <div class="ptms-card text-center animate-bounce-in">
+                    <i data-lucide="award" class="w-10 h-10 mx-auto mb-4 text-blue-500"></i>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">89%</h3>
+                    <p class="text-gray-600 font-medium">Qualified Professionals</p>
+                </div>
+                
+                <div class="ptms-card text-center animate-bounce-in">
+                    <i data-lucide="trending-up" class="w-10 h-10 mx-auto mb-4 text-blue-600"></i>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">95%</h3>
+                    <p class="text-gray-600 font-medium">System Efficiency</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Why Choose <span class="text-gradient-primary">PTMS</span>?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Our system revolutionizes teacher management with modern technology, 
+                    ensuring efficient operations and better educational outcomes.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="ptms-card group animate-bounce-in">
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
+                        <i data-lucide="users" class="w-8 h-8 text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Digital Teacher Profiles</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Comprehensive digital profiles for all teachers with qualifications, experience, and specializations.
+                    </p>
+                </div>
+
+                <div class="ptms-card group animate-bounce-in">
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
+                        <i data-lucide="graduation-cap" class="w-8 h-8 text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Efficient Management</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Streamlined processes for managing teacher information, assignments, and performance tracking.
+                    </p>
+                </div>
+
+                <div class="ptms-card group animate-bounce-in">
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
+                        <i data-lucide="award" class="w-8 h-8 text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Quick Search & Filter</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Advanced search capabilities to find the right teachers by subject, location, or qualifications.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Highlight -->
+    <section class="py-16 bg-blue-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-fade-in">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-6">
+                        Comprehensive Teacher
+                        <br>
+                        <span class="text-gradient-primary">Management Features</span>
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 animate-fade-in">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                            <span class="text-gray-900 font-medium">Complete teacher profile registration</span>
+                        </div>
+                        <div class="flex items-center gap-3 animate-fade-in">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                            <span class="text-gray-900 font-medium">Document and CV management system</span>
+                        </div>
+                        <div class="flex items-center gap-3 animate-fade-in">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                            <span class="text-gray-900 font-medium">Subject and specialization tracking</span>
+                        </div>
+                        <div class="flex items-center gap-3 animate-fade-in">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                            <span class="text-gray-900 font-medium">Advanced search and filtering</span>
+                        </div>
+                        <div class="flex items-center gap-3 animate-fade-in">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                            <span class="text-gray-900 font-medium">Performance monitoring tools</span>
+                        </div>
+                        <div class="flex items-center gap-3 animate-fade-in">
+                            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+                            <span class="text-gray-900 font-medium">Comprehensive reporting system</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <a href="about.html" class="ptms-btn-primary">
+                            Learn More About PTMS
+                            <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 animate-slide-up">
+                    <div class="ptms-card text-center">
+                        <i data-lucide="star" class="w-12 h-12 text-blue-600 mx-auto mb-4"></i>
+                        <h3 class="font-bold text-gray-900 mb-2">Quality Assured</h3>
+                        <p class="text-gray-600">Verified teacher credentials and qualifications</p>
+                    </div>
+                    
+                    <div class="ptms-card mt-8 text-center">
+                        <i data-lucide="trending-up" class="w-12 h-12 text-green-600 mx-auto mb-4"></i>
+                        <h3 class="font-bold text-gray-900 mb-2">Performance Tracking</h3>
+                        <p class="text-gray-600">Monitor and improve teaching effectiveness</p>
+                    </div>
+                    
+                    <div class="ptms-card text-center">
+                        <i data-lucide="users" class="w-12 h-12 text-blue-500 mx-auto mb-4"></i>
+                        <h3 class="font-bold text-gray-900 mb-2">Easy Access</h3>
+                        <p class="text-gray-600">Simple interface for all stakeholders</p>
+                    </div>
+                    
+                    <div class="ptms-card mt-8 text-center">
+                        <i data-lucide="graduation-cap" class="w-12 h-12 text-blue-600 mx-auto mb-4"></i>
+                        <h3 class="font-bold text-gray-900 mb-2">Comprehensive</h3>
+                        <p class="text-gray-600">Complete educational management solution</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-gradient-primary">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">
+                Ready to Transform Education Management?
+            </h2>
+            <p class="text-xl text-white/90 mb-8">
+                Join hundreds of educational institutions already using PTMS for better teacher management.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="register.html" class="ptms-btn-secondary">Get Started Today</a>
+                <a href="contact.html" class="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-6 py-3 rounded-lg font-medium transition-all text-decoration-none">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white text-center py-4">
+        <div class="max-w-7xl mx-auto">
+            <p>&copy; 2025 PTMS - All Rights Reserved | Puntland Teacher Management System</p>
+        </div>
+    </footer>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/ptms-common.js"></script>
+</body>
+</html>
