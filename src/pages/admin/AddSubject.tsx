@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Book, Plus, Save } from "lucide-react";
+import { Book, Plus, Save, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const AddSubject = () => {
   const { toast } = useToast();
@@ -61,7 +62,7 @@ const AddSubject = () => {
 
     toast({
       title: "Success!",
-      description: "Subject added successfully",
+      description: "Subject added successfully and is now available for teacher registration",
     });
 
     // Reset form
@@ -158,6 +159,13 @@ const AddSubject = () => {
               >
                 Clear Form
               </Button>
+
+              <Link to="/admin/subjects/manage">
+                <Button type="button" variant="outline">
+                  <ArrowRight className="w-4 h-4 mr-2" />
+                  View All Subjects
+                </Button>
+              </Link>
             </div>
           </form>
         </CardContent>

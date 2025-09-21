@@ -16,7 +16,7 @@ import {
   Upload,
   UserPlus
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Register = () => {
   const { toast } = useToast();
@@ -41,6 +41,7 @@ const Register = () => {
   const [showExperienceDetails, setShowExperienceDetails] = useState(false);
   const [showMajorSubjects, setShowMajorSubjects] = useState(false);
   const [showOtherQualification, setShowOtherQualification] = useState(false);
+  const [customSubjects, setCustomSubjects] = useState<string[]>([]);
 
   const universityFaculties = [
     "Faculty of Engineering", "Faculty of Education", "Faculty of Business",
@@ -51,6 +52,16 @@ const Register = () => {
     "Math", "Physics", "Biology", "Chemistry",
     "English", "Arabic", "History", "Geography", "Islamic", "Computer"
   ];
+
+  // Load custom subjects from localStorage
+  useEffect(() => {
+    const loadCustomSubjects = () => {
+      const subjects = JSON.parse(localStorage.getItem("subjects") || "[]");
+      const subjectNames = subjects.map((s: any) => s.subjectName);
+      setCustomSubjects(subjectNames);
+    };
+    loadCustomSubjects();
+  }, []);
 
   const facultyPlaceholders: Record<string, string> = {
     "Faculty of Engineering": "Example: Software Engineering, Civil Engineering, Electrical Engineering",
@@ -130,11 +141,11 @@ const Register = () => {
 
   const getSubjectOptions = () => {
     if (formData.education.toLowerCase() === 'university') {
-      return universityFaculties;
+      return [...universityFaculties, ...customSubjects];
     } else if (formData.education.toLowerCase() === 'other') {
-      return []; // No predefined options for "other"
+      return customSubjects; // Show custom subjects for "other" education
     } else {
-      return schoolSubjects;
+      return [...schoolSubjects, ...customSubjects];
     }
   };
 
