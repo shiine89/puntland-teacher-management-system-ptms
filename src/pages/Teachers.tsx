@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Search, 
   Filter,
@@ -12,13 +13,15 @@ import {
   MapPin,
   Phone,
   Mail,
-  Calendar
+  Calendar,
+  Download
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [educationFilter, setEducationFilter] = useState("all");
   
   // Load teachers from localStorage
   useEffect(() => {
@@ -71,14 +74,29 @@ const Teachers = () => {
     }
   }, []);
 
-  const filteredTeachers = teachers.filter(teacher =>
-    (teacher.fullname || teacher.fullName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    teacher.subjects.some(subject => 
-      subject.toLowerCase().includes(searchTerm.toLowerCase())
-    ) ||
-    (teacher.qualification || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (teacher.majorSubjects || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTeachers = teachers.filter(teacher => {
+    const matchesSearch = (teacher.fullname || teacher.fullName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      teacher.subjects.some(subject => 
+        subject.toLowerCase().includes(searchTerm.toLowerCase())
+      ) ||
+      (teacher.qualification || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (teacher.majorSubjects || "").toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesEducation = educationFilter === "all" || 
+      (teacher.education || "").toLowerCase() === educationFilter.toLowerCase();
+    
+    return matchesSearch && matchesEducation;
+  });
+
+  const handleDownloadCV = (teacher) => {
+    if (teacher.cv) {
+      // Create a download link for the CV
+      const link = document.createElement('a');
+      link.href = teacher.cv;
+      link.download = `${teacher.fullname || teacher.fullName}_CV.pdf`;
+      link.click();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,10 +123,18 @@ const Teachers = () => {
               className="ptms-input pl-10"
             />
           </div>
-          <Button variant="outline" className="flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            Filters
-          </Button>
+          <Select value={educationFilter} onValueChange={setEducationFilter}>
+            <SelectTrigger className="w-full md:w-48">
+              <SelectValue placeholder="Filter by education" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Levels</SelectItem>
+              <SelectItem value="primary">Primary</SelectItem>
+              <SelectItem value="secondary">Secondary</SelectItem>
+              <SelectItem value="university">University</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Teachers Grid */}
@@ -203,6 +229,20 @@ const Teachers = () => {
                     </Badge>
                   )}
                 </div>
+
+                {teacher.cv && (
+                  <div className="pt-3">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => handleDownloadCV(teacher)}
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download CV
+                    </Button>
+                  </div>
+                )}
 
                 {teacher.experienceDetails && (
                   <div className="pt-2">
