@@ -36,6 +36,8 @@ const SearchTeachers = () => {
   const [searchCriteria, setSearchCriteria] = useState({
     name: "",
     subject: "",
+    email: "",
+    phone: "",
     education: "",
     region: "",
     gender: ""
@@ -73,19 +75,31 @@ const SearchTeachers = () => {
       );
     }
 
-    if (searchCriteria.education) {
+    if (searchCriteria.email) {
+      filtered = filtered.filter(teacher =>
+        teacher.email.toLowerCase().includes(searchCriteria.email.toLowerCase())
+      );
+    }
+
+    if (searchCriteria.phone) {
+      filtered = filtered.filter(teacher =>
+        teacher.phone.includes(searchCriteria.phone)
+      );
+    }
+
+    if (searchCriteria.education && searchCriteria.education !== "all") {
       filtered = filtered.filter(teacher =>
         teacher.education === searchCriteria.education
       );
     }
 
-    if (searchCriteria.region) {
+    if (searchCriteria.region && searchCriteria.region !== "all") {
       filtered = filtered.filter(teacher =>
         teacher.region === searchCriteria.region
       );
     }
 
-    if (searchCriteria.gender) {
+    if (searchCriteria.gender && searchCriteria.gender !== "all") {
       filtered = filtered.filter(teacher =>
         teacher.gender === searchCriteria.gender
       );
@@ -102,6 +116,8 @@ const SearchTeachers = () => {
     setSearchCriteria({
       name: "",
       subject: "",
+      email: "",
+      phone: "",
       education: "",
       region: "",
       gender: ""
@@ -145,6 +161,28 @@ const SearchTeachers = () => {
             </div>
 
             <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                placeholder="Search by email..."
+                value={searchCriteria.email}
+                onChange={(e) => handleCriteriaChange('email', e.target.value)}
+                className="ptms-input"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                id="phone"
+                placeholder="Search by phone..."
+                value={searchCriteria.phone}
+                onChange={(e) => handleCriteriaChange('phone', e.target.value)}
+                className="ptms-input"
+              />
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="subject">Subject</Label>
               <Input
                 id="subject"
@@ -157,14 +195,14 @@ const SearchTeachers = () => {
 
             <div className="space-y-2">
               <Label htmlFor="education">Education Level</Label>
-              <Select value={searchCriteria.education} onValueChange={(value) => handleCriteriaChange('education', value)}>
+              <Select value={searchCriteria.education || "all"} onValueChange={(value) => handleCriteriaChange('education', value === "all" ? "" : value)}>
                 <SelectTrigger className="ptms-input">
                   <SelectValue placeholder="All levels" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Levels</SelectItem>
+                  <SelectItem value="all">All Levels</SelectItem>
+                  <SelectItem value="Primary">Primary</SelectItem>
                   <SelectItem value="Secondary">Secondary</SelectItem>
-                  <SelectItem value="Diploma">Diploma</SelectItem>
                   <SelectItem value="University">University</SelectItem>
                   <SelectItem value="Masters">Masters</SelectItem>
                   <SelectItem value="PhD">PhD</SelectItem>
@@ -174,12 +212,12 @@ const SearchTeachers = () => {
 
             <div className="space-y-2">
               <Label htmlFor="region">Region</Label>
-              <Select value={searchCriteria.region} onValueChange={(value) => handleCriteriaChange('region', value)}>
+              <Select value={searchCriteria.region || "all"} onValueChange={(value) => handleCriteriaChange('region', value === "all" ? "" : value)}>
                 <SelectTrigger className="ptms-input">
                   <SelectValue placeholder="All regions" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Regions</SelectItem>
+                  <SelectItem value="all">All Regions</SelectItem>
                   <SelectItem value="Bari">Bari</SelectItem>
                   <SelectItem value="Nugaal">Nugaal</SelectItem>
                   <SelectItem value="Mudug">Mudug</SelectItem>
@@ -192,12 +230,12 @@ const SearchTeachers = () => {
 
             <div className="space-y-2">
               <Label htmlFor="gender">Gender</Label>
-              <Select value={searchCriteria.gender} onValueChange={(value) => handleCriteriaChange('gender', value)}>
+              <Select value={searchCriteria.gender || "all"} onValueChange={(value) => handleCriteriaChange('gender', value === "all" ? "" : value)}>
                 <SelectTrigger className="ptms-input">
                   <SelectValue placeholder="All genders" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Genders</SelectItem>
+                  <SelectItem value="all">All Genders</SelectItem>
                   <SelectItem value="Male">Male</SelectItem>
                   <SelectItem value="Female">Female</SelectItem>
                 </SelectContent>
