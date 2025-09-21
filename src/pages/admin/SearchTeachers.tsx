@@ -54,11 +54,14 @@ const SearchTeachers = () => {
   const loadTeachers = () => {
     const stored = localStorage.getItem("teachers");
     const teacherData = stored ? JSON.parse(stored) : [];
+    console.log("Loading teachers data:", teacherData);
+    console.log("Education levels found:", teacherData.map(t => t.education));
     setTeachers(teacherData);
     setFilteredTeachers(teacherData);
   };
 
   const applyFilters = () => {
+    console.log("Applying filters with criteria:", searchCriteria);
     let filtered = teachers;
 
     // Filter by name
@@ -93,9 +96,14 @@ const SearchTeachers = () => {
 
     // Filter by education level
     if (searchCriteria.education && searchCriteria.education !== "all") {
-      filtered = filtered.filter(teacher =>
-        teacher.education?.toLowerCase() === searchCriteria.education.toLowerCase()
-      );
+      console.log(`Filtering by education: ${searchCriteria.education}`);
+      const beforeFilter = filtered.length;
+      filtered = filtered.filter(teacher => {
+        const match = teacher.education?.toLowerCase() === searchCriteria.education.toLowerCase();
+        console.log(`Teacher ${teacher.fullName} education: "${teacher.education}" - Match: ${match}`);
+        return match;
+      });
+      console.log(`Education filter: ${beforeFilter} -> ${filtered.length}`);
     }
 
     // Filter by region
@@ -112,6 +120,7 @@ const SearchTeachers = () => {
       );
     }
 
+    console.log(`Final filtered results: ${filtered.length}`);
     setFilteredTeachers(filtered);
   };
 
@@ -208,11 +217,11 @@ const SearchTeachers = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Levels</SelectItem>
-                  <SelectItem value="Primary">Primary</SelectItem>
-                  <SelectItem value="Secondary">Secondary</SelectItem>
-                  <SelectItem value="University">University</SelectItem>
-                  <SelectItem value="Masters">Masters</SelectItem>
-                  <SelectItem value="PhD">PhD</SelectItem>
+                  <SelectItem value="primary">Primary</SelectItem>
+                  <SelectItem value="secondary">Secondary</SelectItem>
+                  <SelectItem value="university">University</SelectItem>
+                  <SelectItem value="masters">Masters</SelectItem>
+                  <SelectItem value="phd">PhD</SelectItem>
                 </SelectContent>
               </Select>
             </div>
