@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Users, 
@@ -10,7 +14,8 @@ import {
   Trash2,
   Plus,
   Eye,
-  Filter
+  Filter,
+  Save
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -33,6 +38,10 @@ const ManageTeachers = () => {
   const { toast } = useToast();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [deleteTeacherId, setDeleteTeacherId] = useState<number | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     loadTeachers();
@@ -46,9 +55,37 @@ const ManageTeachers = () => {
     setTeachers(teacherData);
   };
 
-  const deleteTeacher = (id: number) => {
-    if (confirm("Are you sure you want to delete this teacher?")) {
-      const updated = teachers.filter(t => t.id !== id);
+  const handleEditTeacher = (teacher: Teacher) => {
+    setEditingTeacher(teacher);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingTeacher) return;
+
+    const updatedTeachers = teachers.map(t => 
+      t.id === editingTeacher.id ? editingTeacher : t
+    );
+    
+    localStorage.setItem("teachers", JSON.stringify(updatedTeachers));
+    setTeachers(updatedTeachers);
+    setIsEditDialogOpen(false);
+    setEditingTeacher(null);
+    
+    toast({
+      title: "Success!",
+      description: "Teacher updated successfully",
+    });
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setDeleteTeacherId(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteTeacherId) {
+      const updated = teachers.filter(t => t.id !== deleteTeacherId);
       localStorage.setItem("teachers", JSON.stringify(updated));
       setTeachers(updated);
       
@@ -57,6 +94,8 @@ const ManageTeachers = () => {
         description: "Teacher deleted successfully",
       });
     }
+    setIsDeleteDialogOpen(false);
+    setDeleteTeacherId(null);
   };
 
   const filteredTeachers = teachers.filter(teacher => {
@@ -171,13 +210,18 @@ const ManageTeachers = () => {
                           <Button size="sm" variant="outline" title="View Details">
                             <Eye className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="outline" title="Edit">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => handleEditTeacher(teacher)}
+                            title="Edit"
+                          >
                             <Edit className="w-4 h-4" />
                           </Button>
                           <Button 
                             size="sm" 
                             variant="outline"
-                            onClick={() => deleteTeacher(teacher.id)}
+                            onClick={() => handleDeleteClick(teacher.id)}
                             className="text-destructive hover:text-destructive"
                             title="Delete"
                           >
@@ -239,6 +283,144 @@ const ManageTeachers = () => {
           </Card>
         </div>
       )}
+
+      {/* Edit Teacher Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Teacher</DialogTitle>
+            <DialogDescription>
+              Update teacher information below.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {editingTeacher && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-fullName">Full Name</Label>
+                  <Input
+                    id="edit-fullName"
+                    value={editingTeacher.fullName}
+                    onChange={(e) => setEditingTeacher({...editingTeacher, fullName: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-gender">Gender</Label>
+                  <Select 
+                    value={editingTeacher.gender} 
+                    onValueChange={(value) => setEditingTeacher({...editingTeacher, gender: value})}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Male">Male</SelectItem>
+                      <SelectItem value="Female">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-phone">Phone</Label>
+                  <Input
+                    id="edit-phone"
+                    value={editingTeacher.phone}
+                    onChange={(e) => setEditingTeacher({...editingTeacher, phone: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-email">Email</Label>
+                  <Input
+                    id="edit-email"
+                    value={editingTeacher.email}
+                    onChange={(e) => setEditingTeacher({...editingTeacher, email: e.target.value})}
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-education">Education Level</Label>
+                  <Select 
+                    value={editingTeacher.education} 
+                    onValueChange={(value) => setEditingTeacher({...editingTeacher, education: value})}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Primary">Primary</SelectItem>
+                      <SelectItem value="Secondary">Secondary</SelectItem>
+                      <SelectItem value="University">University</SelectItem>
+                      <SelectItem value="Masters">Masters</SelectItem>
+                      <SelectItem value="PhD">PhD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-region">Region</Label>
+                  <Select 
+                    value={editingTeacher.region} 
+                    onValueChange={(value) => setEditingTeacher({...editingTeacher, region: value})}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Bari">Bari</SelectItem>
+                      <SelectItem value="Nugaal">Nugaal</SelectItem>
+                      <SelectItem value="Mudug">Mudug</SelectItem>
+                      <SelectItem value="Karkaar">Karkaar</SelectItem>
+                      <SelectItem value="Sanaag">Sanaag</SelectItem>
+                      <SelectItem value="Sool">Sool</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="edit-experience">Experience</Label>
+                <Input
+                  id="edit-experience"
+                  value={editingTeacher.experience}
+                  onChange={(e) => setEditingTeacher({...editingTeacher, experience: e.target.value})}
+                />
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveEdit}>
+              <Save className="w-4 h-4 mr-2" />
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the teacher's record from the system.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete Teacher
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
