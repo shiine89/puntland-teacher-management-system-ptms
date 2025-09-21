@@ -40,7 +40,10 @@ const ManageTeachers = () => {
 
   const loadTeachers = () => {
     const stored = localStorage.getItem("teachers");
-    setTeachers(stored ? JSON.parse(stored) : []);
+    const teacherData = stored ? JSON.parse(stored) : [];
+    console.log("Loading teachers data:", teacherData);
+    console.log("First teacher structure:", teacherData[0]);
+    setTeachers(teacherData);
   };
 
   const deleteTeacher = (id: number) => {
@@ -56,13 +59,23 @@ const ManageTeachers = () => {
     }
   };
 
-  const filteredTeachers = teachers.filter(teacher =>
-    (teacher.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (teacher.email?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
-    (teacher.subjects || []).some(subject => 
-      (subject?.toLowerCase() || '').includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredTeachers = teachers.filter(teacher => {
+    console.log("Filtering teacher:", teacher);
+    
+    if (!teacher) {
+      console.log("Teacher is null/undefined");
+      return false;
+    }
+    
+    const nameMatch = (teacher.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    const emailMatch = (teacher.email?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    const subjectsMatch = (teacher.subjects || []).some(subject => {
+      console.log("Checking subject:", subject);
+      return (subject?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+    });
+    
+    return nameMatch || emailMatch || subjectsMatch;
+  });
 
   return (
     <div className="space-y-6">
