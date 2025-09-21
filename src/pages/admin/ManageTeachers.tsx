@@ -42,6 +42,7 @@ const ManageTeachers = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [deleteTeacherId, setDeleteTeacherId] = useState<number | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [visibleDetails, setVisibleDetails] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     loadTeachers();
@@ -96,6 +97,16 @@ const ManageTeachers = () => {
     }
     setIsDeleteDialogOpen(false);
     setDeleteTeacherId(null);
+  };
+
+  const toggleDetails = (teacherId: number) => {
+    const newVisibleDetails = new Set(visibleDetails);
+    if (newVisibleDetails.has(teacherId)) {
+      newVisibleDetails.delete(teacherId);
+    } else {
+      newVisibleDetails.add(teacherId);
+    }
+    setVisibleDetails(newVisibleDetails);
   };
 
   const filteredTeachers = teachers.filter(teacher => {
@@ -185,51 +196,92 @@ const ManageTeachers = () => {
                 </thead>
                 <tbody>
                   {filteredTeachers.map((teacher, index) => (
-                    <tr key={teacher.id}>
-                      <td className="font-medium">{index + 1}</td>
-                      <td>
-                        <div>
-                          <div className="font-medium text-foreground">{teacher.fullName}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {teacher.subjects.slice(0, 2).join(', ')}
-                            {teacher.subjects.length > 2 && '...'}
+                    <>
+                      <tr key={teacher.id}>
+                        <td className="font-medium">{index + 1}</td>
+                        <td>
+                          <div>
+                            <div className="font-medium text-foreground">{teacher.fullName}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {teacher.subjects.slice(0, 2).join(', ')}
+                              {teacher.subjects.length > 2 && '...'}
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>{teacher.gender}</td>
-                      <td className="text-sm">{teacher.phone}</td>
-                      <td className="text-sm">{teacher.email}</td>
-                      <td>
-                        <Badge className="ptms-badge-primary">
-                          {teacher.education}
-                        </Badge>
-                      </td>
-                      <td>{teacher.registrationDate}</td>
-                      <td>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline" title="View Details">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => handleEditTeacher(teacher)}
-                            title="Edit"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            onClick={() => handleDeleteClick(teacher.id)}
-                            className="text-destructive hover:text-destructive"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
+                        </td>
+                        <td>{teacher.gender}</td>
+                        <td className="text-sm">{teacher.phone}</td>
+                        <td className="text-sm">{teacher.email}</td>
+                        <td>
+                          <Badge className="ptms-badge-primary">
+                            {teacher.education}
+                          </Badge>
+                        </td>
+                        <td>{teacher.registrationDate}</td>
+                        <td>
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => toggleDetails(teacher.id)}
+                              title={visibleDetails.has(teacher.id) ? "Hide Details" : "View Details"}
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={() => handleEditTeacher(teacher)}
+                              title="Edit"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => handleDeleteClick(teacher.id)}
+                              className="text-destructive hover:text-destructive"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                      {visibleDetails.has(teacher.id) && (
+                        <tr className="bg-muted/50">
+                          <td colSpan={8}>
+                            <div className="p-4 space-y-3">
+                              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                                <div>
+                                  <span className="font-medium text-muted-foreground">Experience:</span>
+                                  <p className="text-foreground">{teacher.experience} years</p>
+                                </div>
+                                <div>
+                                  <span className="font-medium text-muted-foreground">Region:</span>
+                                  <p className="text-foreground">{teacher.region || 'Not specified'}</p>
+                                </div>
+                                <div>
+                                  <span className="font-medium text-muted-foreground">Status:</span>
+                                  <Badge variant="outline" className="mt-1">
+                                    {teacher.status || 'Active'}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <div>
+                                <span className="font-medium text-muted-foreground">All Subjects:</span>
+                                <div className="flex flex-wrap gap-2 mt-1">
+                                  {teacher.subjects.map((subject, idx) => (
+                                    <Badge key={idx} variant="secondary" className="text-xs">
+                                      {subject}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </>
                   ))}
                 </tbody>
               </table>
