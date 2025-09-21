@@ -20,54 +20,64 @@ const Teachers = () => {
   const [teachers, setTeachers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   
-  // Mock data for demonstration
+  // Load teachers from localStorage
   useEffect(() => {
-    const mockTeachers = [
-      {
-        id: 1,
-        fullName: "Ahmed Mohamed Hassan",
-        gender: "Male",
-        phone: "+252-90-123-4567",
-        email: "ahmed.hassan@email.com",
-        education: "University",
-        subjects: ["Mathematics", "Physics"],
-        experience: "5 years",
-        region: "Bari",
-        registrationDate: "2024-01-15"
-      },
-      {
-        id: 2,
-        fullName: "Fatima Ali Yusuf",
-        gender: "Female", 
-        phone: "+252-90-987-6543",
-        email: "fatima.yusuf@email.com",
-        education: "University",
-        subjects: ["English", "Literature"],
-        experience: "8 years",
-        region: "Nugaal",
-        registrationDate: "2024-02-20"
-      },
-      {
-        id: 3,
-        fullName: "Omar Abdi Mohamed",
-        gender: "Male",
-        phone: "+252-90-555-0123",
-        email: "omar.abdi@email.com",
-        education: "Secondary",
-        subjects: ["History", "Geography"],
-        experience: "3 years",
-        region: "Mudug",
-        registrationDate: "2024-03-10"
-      }
-    ];
-    setTeachers(mockTeachers);
+    const storedTeachers = localStorage.getItem('teachers');
+    if (storedTeachers) {
+      const parsedTeachers = JSON.parse(storedTeachers);
+      // Add IDs if they don't exist
+      const teachersWithIds = parsedTeachers.map((teacher, index) => ({
+        ...teacher,
+        id: teacher.id || index + 1
+      }));
+      setTeachers(teachersWithIds);
+    } else {
+      // Fallback mock data if no registered teachers
+      const mockTeachers = [
+        {
+          id: 1,
+          fullname: "Ahmed Mohamed Hassan",
+          gender: "Male",
+          phone: "+252-90-123-4567",
+          email: "ahmed.hassan@email.com",
+          education: "University",
+          subjects: ["Mathematics", "Physics"],
+          experience: "5",
+          experienceDetails: "Teaching high school mathematics and physics",
+          location: "Bari",
+          qualification: "Master's in Mathematics",
+          majorSubjects: "Pure Mathematics, Applied Physics",
+          joiningDate: "2024-01-01",
+          registrationDate: "2024-01-15"
+        },
+        {
+          id: 2,
+          fullname: "Fatima Ali Yusuf",
+          gender: "Female", 
+          phone: "+252-90-987-6543",
+          email: "fatima.yusuf@email.com",
+          education: "University",
+          subjects: ["Faculty of Education"],
+          experience: "8",
+          experienceDetails: "Primary and secondary English education",
+          location: "Nugaal",
+          qualification: "Bachelor's in English Literature",
+          majorSubjects: "English Literature, Curriculum Development",
+          joiningDate: "2023-09-01",
+          registrationDate: "2024-02-20"
+        }
+      ];
+      setTeachers(mockTeachers);
+    }
   }, []);
 
   const filteredTeachers = teachers.filter(teacher =>
-    teacher.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (teacher.fullname || teacher.fullName || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
     teacher.subjects.some(subject => 
       subject.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    ) ||
+    (teacher.qualification || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (teacher.majorSubjects || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -108,10 +118,18 @@ const Teachers = () => {
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6 text-primary" />
+                    {teacher.image ? (
+                      <img 
+                        src={teacher.image} 
+                        alt={teacher.fullname || teacher.fullName} 
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <User className="w-6 h-6 text-primary" />
+                    )}
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-foreground">{teacher.fullName}</CardTitle>
+                    <CardTitle className="text-lg text-foreground">{teacher.fullname || teacher.fullName}</CardTitle>
                     <p className="text-muted-foreground text-sm">{teacher.gender}</p>
                   </div>
                 </div>
@@ -135,8 +153,22 @@ const Teachers = () => {
 
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
-                  <span className="text-foreground">{teacher.region}</span>
+                  <span className="text-foreground">{teacher.location || teacher.region}</span>
                 </div>
+
+                {teacher.qualification && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <GraduationCap className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-foreground">{teacher.qualification}</span>
+                  </div>
+                )}
+
+                {teacher.joiningDate && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-foreground">Available from: {teacher.joiningDate}</span>
+                  </div>
+                )}
 
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="w-4 h-4 text-muted-foreground" />
@@ -144,7 +176,7 @@ const Teachers = () => {
                 </div>
 
                 <div className="pt-3">
-                  <p className="text-sm font-medium text-foreground mb-2">Subjects:</p>
+                  <p className="text-sm font-medium text-foreground mb-2">Teaching Subjects:</p>
                   <div className="flex flex-wrap gap-2">
                     {teacher.subjects.map((subject, i) => (
                       <Badge key={i} className="ptms-badge-primary">
@@ -154,11 +186,31 @@ const Teachers = () => {
                   </div>
                 </div>
 
-                <div className="pt-3">
+                {teacher.majorSubjects && (
+                  <div className="pt-2">
+                    <p className="text-sm font-medium text-foreground mb-2">Major Subjects:</p>
+                    <p className="text-sm text-muted-foreground">{teacher.majorSubjects}</p>
+                  </div>
+                )}
+
+                <div className="pt-3 flex flex-wrap gap-2">
                   <Badge variant="outline" className="text-success border-success">
-                    {teacher.experience} experience
+                    {teacher.experience} years experience
                   </Badge>
+                  {teacher.cv && (
+                    <Badge variant="outline" className="text-primary border-primary">
+                      CV Available
+                    </Badge>
+                  )}
                 </div>
+
+                {teacher.experienceDetails && (
+                  <div className="pt-2">
+                    <p className="text-xs text-muted-foreground italic">
+                      "{teacher.experienceDetails}"
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
