@@ -61,47 +61,54 @@ const SearchTeachers = () => {
   const applyFilters = () => {
     let filtered = teachers;
 
-    if (searchCriteria.name) {
+    // Filter by name
+    if (searchCriteria.name.trim()) {
       filtered = filtered.filter(teacher =>
-        teacher.fullName.toLowerCase().includes(searchCriteria.name.toLowerCase())
+        teacher.fullName?.toLowerCase().includes(searchCriteria.name.toLowerCase().trim())
       );
     }
 
-    if (searchCriteria.subject) {
+    // Filter by subject
+    if (searchCriteria.subject.trim()) {
       filtered = filtered.filter(teacher =>
-        teacher.subjects.some(subject =>
-          subject.toLowerCase().includes(searchCriteria.subject.toLowerCase())
+        teacher.subjects?.some(subject =>
+          subject?.toLowerCase().includes(searchCriteria.subject.toLowerCase().trim())
         )
       );
     }
 
-    if (searchCriteria.email) {
+    // Filter by email
+    if (searchCriteria.email.trim()) {
       filtered = filtered.filter(teacher =>
-        teacher.email.toLowerCase().includes(searchCriteria.email.toLowerCase())
+        teacher.email?.toLowerCase().includes(searchCriteria.email.toLowerCase().trim())
       );
     }
 
-    if (searchCriteria.phone) {
+    // Filter by phone
+    if (searchCriteria.phone.trim()) {
       filtered = filtered.filter(teacher =>
-        teacher.phone.includes(searchCriteria.phone)
+        teacher.phone?.includes(searchCriteria.phone.trim())
       );
     }
 
+    // Filter by education level
     if (searchCriteria.education && searchCriteria.education !== "all") {
       filtered = filtered.filter(teacher =>
-        teacher.education === searchCriteria.education
+        teacher.education?.toLowerCase() === searchCriteria.education.toLowerCase()
       );
     }
 
+    // Filter by region
     if (searchCriteria.region && searchCriteria.region !== "all") {
       filtered = filtered.filter(teacher =>
-        teacher.region === searchCriteria.region
+        teacher.region?.toLowerCase() === searchCriteria.region.toLowerCase()
       );
     }
 
+    // Filter by gender
     if (searchCriteria.gender && searchCriteria.gender !== "all") {
       filtered = filtered.filter(teacher =>
-        teacher.gender === searchCriteria.gender
+        teacher.gender?.toLowerCase() === searchCriteria.gender.toLowerCase()
       );
     }
 
@@ -295,44 +302,48 @@ const SearchTeachers = () => {
                   <CardContent className="space-y-3">
                     <div className="flex items-center gap-2 text-sm">
                       <Phone className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-foreground">{teacher.phone}</span>
+                      <span className="text-foreground">{teacher.phone || 'N/A'}</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
                       <Mail className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-foreground">{teacher.email}</span>
+                      <span className="text-foreground break-all">{teacher.email || 'N/A'}</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
                       <GraduationCap className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-foreground">{teacher.education}</span>
+                      <span className="text-foreground">{teacher.education || 'N/A'}</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
                       <MapPin className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-foreground">{teacher.region}</span>
+                      <span className="text-foreground">{teacher.region || 'N/A'}</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-foreground">Registered: {teacher.registrationDate}</span>
+                      <span className="text-foreground">Registered: {teacher.registrationDate || 'N/A'}</span>
                     </div>
 
                     <div className="pt-3">
                       <p className="text-sm font-medium text-foreground mb-2">Subjects:</p>
                       <div className="flex flex-wrap gap-2">
-                        {teacher.subjects.map((subject, i) => (
-                          <Badge key={i} className="ptms-badge-primary">
-                            {subject}
-                          </Badge>
-                        ))}
+                        {teacher.subjects && teacher.subjects.length > 0 ? (
+                          teacher.subjects.map((subject, i) => (
+                            <Badge key={i} className="ptms-badge-primary">
+                              {subject}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="outline">No subjects listed</Badge>
+                        )}
                       </div>
                     </div>
 
                     {teacher.experience && (
                       <div className="pt-3">
                         <Badge variant="outline" className="text-success border-success">
-                          {teacher.experience} experience
+                          {teacher.experience} years experience
                         </Badge>
                       </div>
                     )}
