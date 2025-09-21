@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration - PTMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .ptms-card {
+            background: hsl(0 0% 100%);
+            border: 1px solid hsl(214.3 31.8% 91.4%);
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        
+        .ptms-input {
+            border: 1px solid hsl(214.3 31.8% 91.4%);
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .ptms-input:focus {
+            outline: none;
+            border-color: hsl(221.2 83.2% 53.3%);
+            box-shadow: 0 0 0 3px hsl(221.2 83.2% 53.3% / 0.1);
+        }
+        
+        .ptms-btn-primary {
+            background: hsl(221.2 83.2% 53.3%);
+            color: hsl(0 0% 98%);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ptms-btn-primary:hover {
+            background: hsl(221.2 83.2% 48%);
+        }
+        
+        .text-gradient-primary {
+            background: linear-gradient(135deg, hsl(221.2 83.2% 53.3%), hsl(221.2 83.2% 68%));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            background: hsl(142.1 76.2% 36.3%);
+            color: white;
+            border-radius: 0.5rem;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast.error {
+            background: hsl(0 84.2% 60.2%);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4 shadow-md">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold">PTMS</h1>
+                <nav class="flex space-x-6">
+                    <a href="/" class="hover:underline">Home</a>
+                    <a href="/teachers" class="hover:underline">Teachers</a>
+                    <a href="/about" class="hover:underline">About</a>
+                    <a href="/contact" class="hover:underline">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-6 py-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                Teacher <span class="text-gradient-primary">Registration</span>
+            </h1>
+            <p class="text-xl text-gray-600">
+                Join our comprehensive teacher database and advance your career
+            </p>
+        </div>
+
+        <div class="ptms-card animate-fade-in p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 flex items-center gap-3">
+                    <i data-lucide="user-plus" class="w-6 h-6 text-blue-600"></i>
+                    Register as Teacher
+                </h2>
+                <p class="text-gray-600 mt-2">
+                    Please provide accurate information. All fields marked with * are required.
+                </p>
+            </div>
+
+            <form id="registrationForm" class="space-y-6">
+                <!-- Personal Information -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="fullName" class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                            Full Name *
+                        </label>
+                        <input
+                            type="text"
+                            id="fullName"
+                            name="fullName"
+                            placeholder="Enter your full name"
+                            class="ptms-input w-full"
+                            required
+                        />
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="gender" class="text-sm font-medium text-gray-700">Gender *</label>
+                        <select id="gender" name="gender" class="ptms-input w-full" required>
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="phone" class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <i data-lucide="phone" class="w-4 h-4"></i>
+                            Phone Number *
+                        </label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="+252-90-XXX-XXXX"
+                            class="ptms-input w-full"
+                            required
+                        />
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="email" class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            Email Address *
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="your.email@example.com"
+                            class="ptms-input w-full"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Education & Region -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="education" class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            Education Level *
+                        </label>
+                        <select id="education" name="education" class="ptms-input w-full" required>
+                            <option value="">Select education level</option>
+                            <option value="primary">Primary</option>
+                            <option value="secondary">Secondary</option>
+                            <option value="university">University</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="region" class="text-sm font-medium text-gray-700">Region</label>
+                        <select id="region" name="region" class="ptms-input w-full">
+                            <option value="">Select region</option>
+                            <option value="bari">Bari</option>
+                            <option value="nugaal">Nugaal</option>
+                            <option value="mudug">Mudug</option>
+                            <option value="karkaar">Karkaar</option>
+                            <option value="sanaag">Sanaag</option>
+                            <option value="sool">Sool</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Subjects & Experience -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Teaching Subjects -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-700">Teaching Subjects *</label>
+                        <div id="subjectsContainer">
+                            <!-- Subject inputs will be dynamically added here -->
+                        </div>
+                        <button
+                            type="button"
+                            id="addSubjectBtn"
+                            class="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                            + Add Another Subject
+                        </button>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="experience" class="text-sm font-medium text-gray-700">Teaching Experience (years) *</label>
+                        <input
+                            type="number"
+                            id="experience"
+                            name="experience"
+                            placeholder="e.g., 5"
+                            class="ptms-input w-full"
+                            min="0"
+                            max="50"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Experience Details -->
+                <div id="experienceDetailsWrapper" class="space-y-2 hidden">
+                    <label for="experienceDetails" class="text-sm font-medium text-gray-700">Experience Details *</label>
+                    <textarea
+                        id="experienceDetails"
+                        name="experienceDetails"
+                        placeholder="Describe your work experience, places you've worked, and your professional background..."
+                        class="ptms-input w-full min-h-[100px] resize-vertical"
+                        rows="3"
+                    ></textarea>
+                </div>
+
+                <!-- Teacher Qualification -->
+                <div class="space-y-2">
+                    <label for="qualification" class="text-sm font-medium text-gray-700">Teacher Qualification *</label>
+                    <select id="qualification" name="qualification" class="ptms-input w-full" required>
+                        <option value="">Select qualification</option>
+                        <option value="Diploma in Education">Diploma in Education</option>
+                        <option value="Bachelor of Education">Bachelor of Education</option>
+                        <option value="BSc + PGDE">BSc + PGDE</option>
+                        <option value="Master in Education">Master in Education</option>
+                        <option value="PhD in Education">PhD in Education</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Other Qualification -->
+                <div id="otherQualificationWrapper" class="space-y-2 hidden">
+                    <label for="otherQualification" class="text-sm font-medium text-gray-700">Please specify qualification *</label>
+                    <input
+                        type="text"
+                        id="otherQualification"
+                        name="otherQualification"
+                        placeholder="Enter your qualification"
+                        class="ptms-input w-full"
+                    />
+                </div>
+
+                <!-- Date of Joining -->
+                <div class="space-y-2">
+                    <label for="joiningDate" class="text-sm font-medium text-gray-700">Date of Joining *</label>
+                    <input
+                        type="date"
+                        id="joiningDate"
+                        name="joiningDate"
+                        class="ptms-input w-full"
+                        required
+                    />
+                </div>
+
+                <!-- Major Subjects for University -->
+                <div id="majorSubjectsWrapper" class="space-y-2 hidden">
+                    <label for="majorSubjects" class="text-sm font-medium text-gray-700">Major Subjects (for University Faculty) *</label>
+                    <input
+                        type="text"
+                        id="majorSubjects"
+                        name="majorSubjects"
+                        placeholder="Example: Software Engineering, Biochemistry, Marketing..."
+                        class="ptms-input w-full"
+                    />
+                </div>
+
+                <!-- File Uploads -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="picture" class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <i data-lucide="upload" class="w-4 h-4"></i>
+                            Teacher Picture *
+                        </label>
+                        <input
+                            type="file"
+                            id="picture"
+                            name="picture"
+                            accept="image/*"
+                            class="ptms-input w-full"
+                            required
+                        />
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="cv" class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            Teacher CV (PDF) *
+                        </label>
+                        <input
+                            type="file"
+                            id="cv"
+                            name="cv"
+                            accept=".pdf,.doc,.docx"
+                            class="ptms-input w-full"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-gray-200">
+                    <button type="submit" class="ptms-btn-primary flex items-center gap-2">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i>
+                        Submit Registration
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-600">&copy; 2025 PTMS - All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Form data and state
+        let selectedSubjects = [''];
+        let showExperienceDetails = false;
+        let showMajorSubjects = false;
+        let showOtherQualification = false;
+
+        // Subject options
+        const universityFaculties = [
+            "Faculty of Engineering", "Faculty of Education", "Faculty of Business",
+            "Faculty of Science", "Faculty of Medicine", "Faculty of Law", "Faculty of Agriculture"
+        ];
+
+        const schoolSubjects = [
+            "Math", "Physics", "Biology", "Chemistry",
+            "English", "Arabic", "History", "Geography", "Islamic", "Computer"
+        ];
+
+        const facultyPlaceholders = {
+            "Faculty of Engineering": "Example: Software Engineering, Civil Engineering, Electrical Engineering",
+            "Faculty of Education": "Example: Curriculum Studies, Education Management, Guidance & Counselling",
+            "Faculty of Business": "Example: Accounting, Marketing, Business Administration, Management",
+            "Faculty of Science": "Example: Biology, Physics, Chemistry, Environmental Science",
+            "Faculty of Medicine": "Example: General Medicine, Nursing, Public Health, Pharmacy",
+            "Faculty of Law": "Example: Public Law, Sharia Law, Criminal Law",
+            "Faculty of Agriculture": "Example: Agronomy, Horticulture, Animal Science, Soil Science"
+        };
+
+        // Helper functions
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${isError ? 'error' : ''} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function getSubjectOptions() {
+            const education = document.getElementById('education').value.toLowerCase();
+            if (education === 'university') {
+                return universityFaculties;
+            } else if (education === 'other') {
+                return [];
+            } else {
+                return schoolSubjects;
+            }
+        }
+
+        function createSubjectInput(index, value = '') {
+            const education = document.getElementById('education').value.toLowerCase();
+            const div = document.createElement('div');
+            div.className = 'flex gap-2 items-end subject-row';
+            div.dataset.index = index;
+
+            if (education === 'other') {
+                // Text input for custom subjects
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <input
+                            type="text"
+                            placeholder="Enter your teaching subject"
+                            value="${value}"
+                            class="ptms-input w-full subject-input"
+                            data-index="${index}"
+                        />
+                    </div>
+                    ${selectedSubjects.length > 1 ? `
+                        <button
+                            type="button"
+                            class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 remove-subject"
+                            data-index="${index}"
+                        >
+                            Remove
+                        </button>
+                    ` : ''}
+                `;
+            } else {
+                // Dropdown for predefined subjects
+                const options = getSubjectOptions();
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <select class="ptms-input w-full subject-select" data-index="${index}">
+                            <option value="">Select subject</option>
+                            ${options.map(option => `<option value="${option}" ${option === value ? 'selected' : ''}>${option}</option>`).join('')}
+                        </select>
+                    </div>
+                    ${selectedSubjects.length > 1 ? `
+                        <button
+                            type="button"
+                            class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 remove-subject"
+                            data-index="${index}"
+                        >
+                            Remove
+                        </button>
+                    ` : ''}
+                `;
+            }
+
+            return div;
+        }
+
+        function renderSubjects() {
+            const container = document.getElementById('subjectsContainer');
+            container.innerHTML = '';
+            
+            selectedSubjects.forEach((subject, index) => {
+                const subjectInput = createSubjectInput(index, subject);
+                container.appendChild(subjectInput);
+            });
+
+            // Add event listeners
+            container.querySelectorAll('.subject-input, .subject-select').forEach(input => {
+                input.addEventListener('change', function() {
+                    const index = parseInt(this.dataset.index);
+                    selectedSubjects[index] = this.value;
+                    updateMajorSubjectsVisibility();
+                });
+            });
+
+            container.querySelectorAll('.remove-subject').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    selectedSubjects.splice(index, 1);
+                    renderSubjects();
+                    updateMajorSubjectsVisibility();
+                });
+            });
+        }
+
+        function updateMajorSubjectsVisibility() {
+            const education = document.getElementById('education').value.toLowerCase();
+            const hasFacultySubject = selectedSubjects.some(subject => universityFaculties.includes(subject));
+            
+            const wrapper = document.getElementById('majorSubjectsWrapper');
+            const input = document.getElementById('majorSubjects');
+            
+            if (education === 'university' && hasFacultySubject) {
+                wrapper.classList.remove('hidden');
+                input.required = true;
+                updateMajorSubjectsPlaceholder();
+            } else {
+                wrapper.classList.add('hidden');
+                input.required = false;
+                input.value = '';
+            }
+        }
+
+        function updateMajorSubjectsPlaceholder() {
+            const firstFaculty = selectedSubjects.find(subject => universityFaculties.includes(subject));
+            const input = document.getElementById('majorSubjects');
+            
+            if (firstFaculty && facultyPlaceholders[firstFaculty]) {
+                input.placeholder = facultyPlaceholders[firstFaculty];
+            } else {
+                input.placeholder = "Example: Software Engineering, Biochemistry, Marketing...";
+            }
+        }
+
+        // Event listeners
+        document.getElementById('education').addEventListener('change', function() {
+            selectedSubjects = [''];
+            renderSubjects();
+            updateMajorSubjectsVisibility();
+        });
+
+        document.getElementById('experience').addEventListener('input', function() {
+            const experience = parseInt(this.value);
+            const wrapper = document.getElementById('experienceDetailsWrapper');
+            const textarea = document.getElementById('experienceDetails');
+            
+            if (experience > 0) {
+                wrapper.classList.remove('hidden');
+                textarea.required = true;
+            } else {
+                wrapper.classList.add('hidden');
+                textarea.required = false;
+                textarea.value = '';
+            }
+        });
+
+        document.getElementById('qualification').addEventListener('change', function() {
+            const wrapper = document.getElementById('otherQualificationWrapper');
+            const input = document.getElementById('otherQualification');
+            
+            if (this.value === 'Other') {
+                wrapper.classList.remove('hidden');
+                input.required = true;
+            } else {
+                wrapper.classList.add('hidden');
+                input.required = false;
+                input.value = '';
+            }
+        });
+
+        document.getElementById('addSubjectBtn').addEventListener('click', function() {
+            if (selectedSubjects.length < 5) {
+                selectedSubjects.push('');
+                renderSubjects();
+            } else {
+                showToast('You can select maximum 5 subjects.', true);
+            }
+        });
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate subjects
+            const validSubjects = selectedSubjects.filter(subject => subject !== '');
+            if (validSubjects.length === 0) {
+                showToast('Please select at least one subject.', true);
+                return;
+            }
+
+            // Get form data
+            const formData = new FormData(this);
+            const imageFile = formData.get('picture');
+            const cvFile = formData.get('cv');
+
+            if (!imageFile || !cvFile) {
+                showToast('Please upload both picture and CV files.', true);
+                return;
+            }
+
+            try {
+                // Convert files to base64
+                const imageData = await fileToBase64(imageFile);
+                const cvData = await fileToBase64(cvFile);
+
+                // Create teacher object
+                const teacher = {
+                    fullname: formData.get('fullName'),
+                    gender: formData.get('gender'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    education: formData.get('education'),
+                    experience: formData.get('experience'),
+                    experienceDetails: formData.get('experienceDetails') || '',
+                    location: formData.get('region'),
+                    qualification: formData.get('qualification') === 'Other' ? formData.get('otherQualification') : formData.get('qualification'),
+                    joiningDate: formData.get('joiningDate'),
+                    subjects: validSubjects,
+                    majorSubjects: formData.get('majorSubjects') || '',
+                    image: imageData,
+                    cv: cvData,
+                    registrationDate: new Date().toISOString().split('T')[0]
+                };
+
+                // Save to localStorage
+                const teachers = JSON.parse(localStorage.getItem('teachers') || '[]');
+                teachers.push(teacher);
+                localStorage.setItem('teachers', JSON.stringify(teachers));
+
+                showToast('Registration Successful! Your teacher profile has been submitted for review.');
+                
+                // Reset form
+                this.reset();
+                selectedSubjects = [''];
+                renderSubjects();
+                document.getElementById('experienceDetailsWrapper').classList.add('hidden');
+                document.getElementById('majorSubjectsWrapper').classList.add('hidden');
+                document.getElementById('otherQualificationWrapper').classList.add('hidden');
+
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = '/teachers';
+                }, 2000);
+
+            } catch (error) {
+                showToast('Failed to process files. Please try again.', true);
+            }
+        });
+
+        // Helper function to convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Initialize
+        renderSubjects();
+    </script>
+</body>
+</html>
