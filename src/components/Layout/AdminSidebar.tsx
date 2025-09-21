@@ -7,7 +7,8 @@ import {
   Search, 
   FileText,
   Plus,
-  Settings
+  Settings,
+  ArrowLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -30,6 +31,13 @@ const AdminSidebar = () => {
         <GraduationCap className="w-8 h-8 text-primary" />
         <h2 className="text-xl font-bold text-white">PTMS Admin</h2>
       </div>
+
+      <Link to="/" className="block mb-6">
+        <div className="flex items-center gap-2 text-white/80 hover:text-white transition-colors p-2 rounded hover:bg-white/10">
+          <ArrowLeft className="w-4 h-4" />
+          <span className="text-sm">Back to Home</span>
+        </div>
+      </Link>
 
       <nav className="space-y-2">
         <Link to="/admin/dashboard">
