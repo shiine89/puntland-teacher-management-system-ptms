@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { 
   UserPlus, 
@@ -13,40 +14,127 @@ import {
   GraduationCap,
   FileText,
   Upload,
-  Save
+  Save,
+  Plus,
+  Minus,
+  Calendar,
+  BookOpen
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddTeacher = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     fullName: "",
     gender: "",
+    dateOfBirth: "",
     phone: "",
     email: "",
     education: "",
-    subjects: "",
-    experience: "",
     region: "",
+    experience: "",
+    experienceDetails: "",
+    joiningDate: "",
     qualifications: "",
+    otherQualification: "",
+    cv: null as File | null,
+    profilePhoto: null as File | null,
     status: "active"
   });
 
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+  const [customSubjects, setCustomSubjects] = useState<string[]>([]);
+  const [showExperienceDetails, setShowExperienceDetails] = useState(false);
+  const [showOtherQualification, setShowOtherQualification] = useState(false);
+  const [additionalSubjects, setAdditionalSubjects] = useState<string[]>([""]);
+
+  // Load custom subjects from localStorage
+  useEffect(() => {
+    const subjects = JSON.parse(localStorage.getItem("customSubjects") || "[]");
+    setCustomSubjects(subjects);
+  }, []);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    if (field === 'experience') {
+      setShowExperienceDetails(value === 'experienced');
+    }
+    
+    if (field === 'qualifications') {
+      setShowOtherQualification(value === 'other');
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubjectChange = (subject: string, checked: boolean) => {
+    if (checked) {
+      setSelectedSubjects(prev => [...prev, subject]);
+    } else {
+      setSelectedSubjects(prev => prev.filter(s => s !== subject));
+    }
+  };
+
+  const handleAdditionalSubjectChange = (index: number, value: string) => {
+    const newSubjects = [...additionalSubjects];
+    newSubjects[index] = value;
+    setAdditionalSubjects(newSubjects);
+  };
+
+  const addAdditionalSubject = () => {
+    setAdditionalSubjects([...additionalSubjects, ""]);
+  };
+
+  const removeAdditionalSubject = (index: number) => {
+    if (additionalSubjects.length > 1) {
+      setAdditionalSubjects(additionalSubjects.filter((_, i) => i !== index));
+    }
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  const handleFileChange = async (field: 'cv' | 'profilePhoto', file: File | null) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: file
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
-    const requiredFields = ['fullName', 'gender', 'phone', 'email', 'education', 'subjects'];
-    const missingFields = requiredFields.filter(field => !formData[field]);
+    const requiredFields = ['fullName', 'gender', 'phone', 'email', 'education', 'region'];
+    const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
     
     if (missingFields.length > 0) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate subjects
+    const allSubjects = [
+      ...selectedSubjects,
+      ...additionalSubjects.filter(s => s.trim() !== "")
+    ];
+
+    if (allSubjects.length === 0) {
+      toast({
+        title: "Missing Subjects",
+        description: "Please select at least one teaching subject.",
         variant: "destructive"
       });
       return;
@@ -67,36 +155,92 @@ const AddTeacher = () => {
       return;
     }
 
-    // Add new teacher
-    const newTeacher = {
-      id: Date.now(),
-      ...formData,
-      subjects: formData.subjects.split(',').map(s => s.trim()),
-      registrationDate: new Date().toLocaleDateString()
-    };
+    try {
+      // Process file uploads
+      let cvBase64 = "";
+      let photoBase64 = "";
 
-    teachers.push(newTeacher);
-    localStorage.setItem("teachers", JSON.stringify(teachers));
+      if (formData.cv) {
+        cvBase64 = await fileToBase64(formData.cv);
+      }
 
-    toast({
-      title: "Success!",
-      description: "Teacher added successfully",
-    });
+      if (formData.profilePhoto) {
+        photoBase64 = await fileToBase64(formData.profilePhoto);
+      }
 
-    // Reset form
-    setFormData({
-      fullName: "",
-      gender: "",
-      phone: "",
-      email: "",
-      education: "",
-      subjects: "",
-      experience: "",
-      region: "",
-      qualifications: "",
-      status: "active"
-    });
+      // Create new teacher object
+      const newTeacher = {
+        id: Date.now(),
+        fullName: formData.fullName,
+        gender: formData.gender,
+        dateOfBirth: formData.dateOfBirth,
+        phone: formData.phone,
+        email: formData.email,
+        education: formData.education,
+        region: formData.region,
+        experience: formData.experience,
+        experienceDetails: formData.experienceDetails,
+        joiningDate: formData.joiningDate,
+        subjects: allSubjects,
+        qualifications: formData.qualifications,
+        otherQualification: formData.otherQualification,
+        cv: cvBase64,
+        profilePhoto: photoBase64,
+        status: formData.status,
+        registrationDate: new Date().toLocaleDateString(),
+        registeredBy: "admin"
+      };
+
+      teachers.push(newTeacher);
+      localStorage.setItem("teachers", JSON.stringify(teachers));
+
+      toast({
+        title: "Success!",
+        description: "Teacher added successfully. Redirecting to manage teachers...",
+      });
+
+      // Reset form
+      setFormData({
+        fullName: "",
+        gender: "",
+        dateOfBirth: "",
+        phone: "",
+        email: "",
+        education: "",
+        region: "",
+        experience: "",
+        experienceDetails: "",
+        joiningDate: "",
+        qualifications: "",
+        otherQualification: "",
+        cv: null,
+        profilePhoto: null,
+        status: "active"
+      });
+      setSelectedSubjects([]);
+      setAdditionalSubjects([""]);
+      setShowExperienceDetails(false);
+      setShowOtherQualification(false);
+
+      // Navigate to manage teachers after a short delay
+      setTimeout(() => {
+        navigate('/admin/teachers/manage');
+      }, 2000);
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to process file uploads. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
+
+  const predefinedSubjects = [
+    "Mathematics", "Physics", "Chemistry", "Biology", "English", "Arabic", 
+    "History", "Geography", "Computer Science", "Islamic Studies", "Art", 
+    "Physical Education", "Music", "Economics", "Sociology", "Psychology"
+  ];
 
   return (
     <div className="space-y-6">
@@ -151,6 +295,36 @@ const AddTeacher = () => {
                     <SelectItem value="Female">Female</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="dateOfBirth" className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Date of Birth
+                </Label>
+                <Input
+                  id="dateOfBirth"
+                  type="date"
+                  value={formData.dateOfBirth}
+                  onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                  className="ptms-input"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="joiningDate" className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  Joining Date
+                </Label>
+                <Input
+                  id="joiningDate"
+                  type="date"
+                  value={formData.joiningDate}
+                  onChange={(e) => handleInputChange('joiningDate', e.target.value)}
+                  className="ptms-input"
+                />
               </div>
             </div>
 
@@ -211,7 +385,7 @@ const AddTeacher = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="region">Region</Label>
+                <Label htmlFor="region">Region *</Label>
                 <Select value={formData.region} onValueChange={(value) => handleInputChange('region', value)}>
                   <SelectTrigger className="ptms-input">
                     <SelectValue placeholder="Select region" />
@@ -228,45 +402,150 @@ const AddTeacher = () => {
               </div>
             </div>
 
-            {/* Subjects & Experience */}
-            <div className="grid md:grid-cols-2 gap-4">
+            {/* Experience */}
+            <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="subjects">Teaching Subjects *</Label>
-                <Input
-                  id="subjects"
-                  placeholder="e.g., Mathematics, Physics (comma separated)"
-                  value={formData.subjects}
-                  onChange={(e) => handleInputChange('subjects', e.target.value)}
-                  className="ptms-input"
-                  required
-                />
+                <Label htmlFor="experience">Teaching Experience *</Label>
+                <Select value={formData.experience} onValueChange={(value) => handleInputChange('experience', value)}>
+                  <SelectTrigger className="ptms-input">
+                    <SelectValue placeholder="Select experience level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="fresh">Fresh Graduate (No Experience)</SelectItem>
+                    <SelectItem value="experienced">Experienced Teacher</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {showExperienceDetails && (
+                <div className="space-y-2 animate-slide-down">
+                  <Label htmlFor="experienceDetails">Experience Details</Label>
+                  <Textarea
+                    id="experienceDetails"
+                    placeholder="Please describe your teaching experience, years worked, institutions, etc."
+                    value={formData.experienceDetails}
+                    onChange={(e) => handleInputChange('experienceDetails', e.target.value)}
+                    className="ptms-input min-h-[100px]"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Teaching Subjects */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Teaching Subjects *
+                </Label>
+                <p className="text-sm text-muted-foreground">Select subjects you can teach</p>
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-4 border border-border rounded-lg">
+                  {predefinedSubjects.map((subject) => (
+                    <div key={subject} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={subject}
+                        checked={selectedSubjects.includes(subject)}
+                        onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
+                      />
+                      <Label
+                        htmlFor={subject}
+                        className="text-sm font-normal cursor-pointer"
+                      >
+                        {subject}
+                      </Label>
+                    </div>
+                  ))}
+                  
+                  {customSubjects.map((subject) => (
+                    <div key={subject} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={subject}
+                        checked={selectedSubjects.includes(subject)}
+                        onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
+                      />
+                      <Label
+                        htmlFor={subject}
+                        className="text-sm font-normal cursor-pointer text-primary"
+                      >
+                        {subject}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="experience">Teaching Experience</Label>
-                <Input
-                  id="experience"
-                  placeholder="e.g., 5 years"
-                  value={formData.experience}
-                  onChange={(e) => handleInputChange('experience', e.target.value)}
-                  className="ptms-input"
-                />
+                <Label>Additional/Other Subjects</Label>
+                <p className="text-sm text-muted-foreground">Add any other subjects not listed above</p>
+                {additionalSubjects.map((subject, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      placeholder="Enter subject name"
+                      value={subject}
+                      onChange={(e) => handleAdditionalSubjectChange(index, e.target.value)}
+                      className="ptms-input"
+                    />
+                    <div className="flex gap-1">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={addAdditionalSubject}
+                        className="shrink-0"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                      {additionalSubjects.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => removeAdditionalSubject(index)}
+                          className="shrink-0"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* Qualifications */}
-            <div className="space-y-2">
-              <Label htmlFor="qualifications" className="flex items-center gap-2">
-                <FileText className="w-4 h-4" />
-                Additional Qualifications & Certifications
-              </Label>
-              <Textarea
-                id="qualifications"
-                placeholder="List any additional qualifications, certifications, or achievements..."
-                value={formData.qualifications}
-                onChange={(e) => handleInputChange('qualifications', e.target.value)}
-                className="ptms-input min-h-[100px]"
-              />
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="qualifications" className="flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Additional Qualifications
+                </Label>
+                <Select value={formData.qualifications} onValueChange={(value) => handleInputChange('qualifications', value)}>
+                  <SelectTrigger className="ptms-input">
+                    <SelectValue placeholder="Select qualification type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="certificates">Professional Certificates</SelectItem>
+                    <SelectItem value="training">Training Programs</SelectItem>
+                    <SelectItem value="workshops">Workshops & Seminars</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {showOtherQualification && (
+                <div className="space-y-2 animate-slide-down">
+                  <Label htmlFor="otherQualification">Please specify your qualification</Label>
+                  <Textarea
+                    id="otherQualification"
+                    placeholder="Describe your additional qualifications..."
+                    value={formData.otherQualification}
+                    onChange={(e) => handleInputChange('otherQualification', e.target.value)}
+                    className="ptms-input min-h-[100px]"
+                  />
+                </div>
+              )}
             </div>
 
             {/* File Uploads */}
@@ -274,14 +553,16 @@ const AddTeacher = () => {
               <div className="space-y-2">
                 <Label htmlFor="cv" className="flex items-center gap-2">
                   <Upload className="w-4 h-4" />
-                  Upload CV (PDF)
+                  Upload CV (PDF/DOC)
                 </Label>
                 <Input
                   id="cv"
                   type="file"
                   accept=".pdf,.doc,.docx"
+                  onChange={(e) => handleFileChange('cv', e.target.files?.[0] || null)}
                   className="ptms-input"
                 />
+                <p className="text-xs text-muted-foreground">Max size: 5MB</p>
               </div>
 
               <div className="space-y-2">
@@ -293,8 +574,10 @@ const AddTeacher = () => {
                   id="photo"
                   type="file"
                   accept="image/*"
+                  onChange={(e) => handleFileChange('profilePhoto', e.target.files?.[0] || null)}
                   className="ptms-input"
                 />
+                <p className="text-xs text-muted-foreground">Max size: 2MB</p>
               </div>
             </div>
 
@@ -307,18 +590,29 @@ const AddTeacher = () => {
               <Button 
                 type="button" 
                 variant="outline"
-                onClick={() => setFormData({
-                  fullName: "",
-                  gender: "",
-                  phone: "",
-                  email: "",
-                  education: "",
-                  subjects: "",
-                  experience: "",
-                  region: "",
-                  qualifications: "",
-                  status: "active"
-                })}
+                onClick={() => {
+                  setFormData({
+                    fullName: "",
+                    gender: "",
+                    dateOfBirth: "",
+                    phone: "",
+                    email: "",
+                    education: "",
+                    region: "",
+                    experience: "",
+                    experienceDetails: "",
+                    joiningDate: "",
+                    qualifications: "",
+                    otherQualification: "",
+                    cv: null,
+                    profilePhoto: null,
+                    status: "active"
+                  });
+                  setSelectedSubjects([]);
+                  setAdditionalSubjects([""]);
+                  setShowExperienceDetails(false);
+                  setShowOtherQualification(false);
+                }}
               >
                 Clear Form
               </Button>
