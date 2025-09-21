@@ -8,6 +8,7 @@ import {
   Calendar
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -42,7 +43,8 @@ const AdminDashboard = () => {
       icon: Users,
       color: "text-primary",
       bgColor: "bg-primary/10",
-      description: "All registered teachers in the system"
+      description: "All registered teachers in the system",
+      link: "/admin/manage-teachers"
     },
     {
       title: "Listed Subjects",
@@ -50,7 +52,8 @@ const AdminDashboard = () => {
       icon: Book,
       color: "text-success",
       bgColor: "bg-success/10",
-      description: "Available subjects for teaching"
+      description: "Available subjects for teaching",
+      link: "/admin/manage-subjects"
     },
     {
       title: "New Teachers (30 days)",
@@ -58,7 +61,8 @@ const AdminDashboard = () => {
       icon: UserCheck,
       color: "text-secondary",
       bgColor: "bg-secondary/10",
-      description: "Recently registered teachers"
+      description: "Recently registered teachers",
+      link: "/admin/manage-teachers?filter=recent"
     },
     {
       title: "Active Profiles",
@@ -66,7 +70,8 @@ const AdminDashboard = () => {
       icon: TrendingUp,
       color: "text-primary",
       bgColor: "bg-primary/10",
-      description: "Currently active teacher profiles"
+      description: "Currently active teacher profiles",
+      link: "/admin/manage-teachers"
     }
   ];
 
@@ -86,28 +91,29 @@ const AdminDashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {dashboardCards.map((card, index) => (
-          <Card 
-            key={index} 
-            className="ptms-card cursor-pointer animate-bounce-in" 
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                {card.title}
-              </CardTitle>
-              <div className={`w-10 h-10 rounded-lg ${card.bgColor} flex items-center justify-center`}>
-                <card.icon className={`w-5 h-5 ${card.color}`} />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground mb-1">
-                {card.value}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {card.description}
-              </p>
-            </CardContent>
-          </Card>
+          <Link to={card.link} key={index}>
+            <Card 
+              className="ptms-card cursor-pointer animate-bounce-in hover:shadow-lg transition-shadow" 
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  {card.title}
+                </CardTitle>
+                <div className={`w-10 h-10 rounded-lg ${card.bgColor} flex items-center justify-center`}>
+                  <card.icon className={`w-5 h-5 ${card.color}`} />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-foreground mb-1">
+                  {card.value}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {card.description}
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
 
