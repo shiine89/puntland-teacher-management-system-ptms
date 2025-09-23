@@ -94,13 +94,19 @@ const SearchTeachers = () => {
       );
     }
 
-    // Filter by education level
+    // Filter by education level (handle typos in legacy data)
     if (searchCriteria.education && searchCriteria.education !== "all") {
       console.log(`Filtering by education: ${searchCriteria.education}`);
       const beforeFilter = filtered.length;
       filtered = filtered.filter(teacher => {
-        const match = teacher.education?.toLowerCase() === searchCriteria.education.toLowerCase();
-        console.log(`Teacher ${teacher.fullName} education: "${teacher.education}" - Match: ${match}`);
+        // Normalize teacher education to fix typos
+        const normalizedTeacherEducation = teacher.education?.toLowerCase()
+          .replace('seondary', 'secondary'); // Fix typo from legacy data
+        
+        const normalizedSearchEducation = searchCriteria.education.toLowerCase();
+        
+        const match = normalizedTeacherEducation === normalizedSearchEducation;
+        console.log(`Teacher ${teacher.fullName} education: "${teacher.education}" (normalized: "${normalizedTeacherEducation}") - Search: "${normalizedSearchEducation}" - Match: ${match}`);
         return match;
       });
       console.log(`Education filter: ${beforeFilter} -> ${filtered.length}`);

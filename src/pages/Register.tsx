@@ -375,7 +375,7 @@ const Register = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="primary">Primary</SelectItem>
-                      <SelectItem value="seondary">Secondary</SelectItem>
+                      <SelectItem value="secondary">Secondary</SelectItem>
                       <SelectItem value="university">University</SelectItem>
                       <SelectItem value="other">other</SelectItem>
                 

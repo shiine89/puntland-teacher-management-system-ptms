@@ -404,11 +404,11 @@ const ManageTeachers = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Primary">Primary</SelectItem>
-                      <SelectItem value="Secondary">Secondary</SelectItem>
-                      <SelectItem value="University">University</SelectItem>
-                      <SelectItem value="Masters">Masters</SelectItem>
-                      <SelectItem value="PhD">PhD</SelectItem>
+                      <SelectItem value="primary">Primary</SelectItem>
+                      <SelectItem value="secondary">Secondary</SelectItem>
+                      <SelectItem value="university">University</SelectItem>
+                      <SelectItem value="masters">Masters</SelectItem>
+                      <SelectItem value="phd">PhD</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
