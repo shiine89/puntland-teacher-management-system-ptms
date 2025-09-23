@@ -43,10 +43,19 @@ const ManageTeachers = () => {
   const [deleteTeacherId, setDeleteTeacherId] = useState<number | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [visibleDetails, setVisibleDetails] = useState<Set<number>>(new Set());
+  const [editingSubjects, setEditingSubjects] = useState<string[]>([]);
+  const [customSubjects, setCustomSubjects] = useState<string[]>([]);
 
   useEffect(() => {
     loadTeachers();
+    loadCustomSubjects();
   }, []);
+
+  const loadCustomSubjects = () => {
+    const subjects = JSON.parse(localStorage.getItem("subjects") || "[]");
+    const subjectNames = subjects.map((s: any) => s.subjectName);
+    setCustomSubjects(subjectNames);
+  };
 
   const loadTeachers = () => {
     const stored = localStorage.getItem("teachers");
@@ -58,20 +67,34 @@ const ManageTeachers = () => {
 
   const handleEditTeacher = (teacher: Teacher) => {
     setEditingTeacher(teacher);
+    setEditingSubjects([...teacher.subjects]);
     setIsEditDialogOpen(true);
   };
 
   const handleSaveEdit = () => {
     if (!editingTeacher) return;
 
+    // Validate subjects
+    const validSubjects = editingSubjects.filter(subject => subject.trim() !== "");
+    if (validSubjects.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please select at least one subject",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const updatedTeacher = { ...editingTeacher, subjects: validSubjects };
     const updatedTeachers = teachers.map(t => 
-      t.id === editingTeacher.id ? editingTeacher : t
+      t.id === updatedTeacher.id ? updatedTeacher : t
     );
     
     localStorage.setItem("teachers", JSON.stringify(updatedTeachers));
     setTeachers(updatedTeachers);
     setIsEditDialogOpen(false);
     setEditingTeacher(null);
+    setEditingSubjects([]);
     
     toast({
       title: "Success!",
@@ -85,14 +108,15 @@ const ManageTeachers = () => {
   };
 
   const confirmDelete = () => {
-    if (deleteTeacherId) {
+    if (deleteTeacherId !== null) {
+      const teacherToDelete = teachers.find(t => t.id === deleteTeacherId);
       const updated = teachers.filter(t => t.id !== deleteTeacherId);
       localStorage.setItem("teachers", JSON.stringify(updated));
       setTeachers(updated);
       
       toast({
         title: "Success!",
-        description: "Teacher deleted successfully",
+        description: `${teacherToDelete?.fullName || 'Teacher'} has been deleted successfully`,
       });
     }
     setIsDeleteDialogOpen(false);
@@ -126,6 +150,45 @@ const ManageTeachers = () => {
     
     return nameMatch || emailMatch || subjectsMatch;
   });
+
+  const handleSubjectChange = (index: number, value: string) => {
+    const newSubjects = [...editingSubjects];
+    newSubjects[index] = value;
+    setEditingSubjects(newSubjects);
+  };
+
+  const addSubject = () => {
+    if (editingSubjects.length < 5) {
+      setEditingSubjects([...editingSubjects, ""]);
+    }
+  };
+
+  const removeSubject = (index: number) => {
+    if (editingSubjects.length > 1) {
+      const newSubjects = editingSubjects.filter((_, i) => i !== index);
+      setEditingSubjects(newSubjects);
+    }
+  };
+
+  const getSubjectOptions = () => {
+    const schoolSubjects = [
+      "Math", "Physics", "Biology", "Chemistry",
+      "English", "Arabic", "History", "Geography", "Islamic", "Computer"
+    ];
+    
+    const universityFaculties = [
+      "Faculty of Engineering", "Faculty of Education", "Faculty of Business",
+      "Faculty of Science", "Faculty of Medicine", "Faculty of Law", "Faculty of Agriculture"
+    ];
+
+    if (!editingTeacher) return [];
+    
+    if (editingTeacher.education.toLowerCase() === 'university') {
+      return [...universityFaculties, ...customSubjects];
+    } else {
+      return [...schoolSubjects, ...customSubjects];
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -350,25 +413,27 @@ const ManageTeachers = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-fullName">Full Name</Label>
+                  <Label htmlFor="edit-fullName">Full Name *</Label>
                   <Input
                     id="edit-fullName"
                     value={editingTeacher.fullName}
                     onChange={(e) => setEditingTeacher({...editingTeacher, fullName: e.target.value})}
+                    className="ptms-input"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-gender">Gender</Label>
+                  <Label htmlFor="edit-gender">Gender *</Label>
                   <Select 
                     value={editingTeacher.gender} 
                     onValueChange={(value) => setEditingTeacher({...editingTeacher, gender: value})}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="ptms-input">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Male">Male</SelectItem>
-                      <SelectItem value="Female">Female</SelectItem>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -376,39 +441,43 @@ const ManageTeachers = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-phone">Phone</Label>
+                  <Label htmlFor="edit-phone">Phone *</Label>
                   <Input
                     id="edit-phone"
                     value={editingTeacher.phone}
                     onChange={(e) => setEditingTeacher({...editingTeacher, phone: e.target.value})}
+                    className="ptms-input"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-email">Email</Label>
+                  <Label htmlFor="edit-email">Email *</Label>
                   <Input
                     id="edit-email"
+                    type="email"
                     value={editingTeacher.email}
                     onChange={(e) => setEditingTeacher({...editingTeacher, email: e.target.value})}
+                    className="ptms-input"
+                    required
                   />
                 </div>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-education">Education Level</Label>
+                  <Label htmlFor="edit-education">Education Level *</Label>
                   <Select 
                     value={editingTeacher.education} 
                     onValueChange={(value) => setEditingTeacher({...editingTeacher, education: value})}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="ptms-input">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="primary">Primary</SelectItem>
                       <SelectItem value="secondary">Secondary</SelectItem>
                       <SelectItem value="university">University</SelectItem>
-                      <SelectItem value="masters">Masters</SelectItem>
-                      <SelectItem value="phd">PhD</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -418,28 +487,97 @@ const ManageTeachers = () => {
                     value={editingTeacher.region} 
                     onValueChange={(value) => setEditingTeacher({...editingTeacher, region: value})}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="ptms-input">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Bari">Bari</SelectItem>
-                      <SelectItem value="Nugaal">Nugaal</SelectItem>
-                      <SelectItem value="Mudug">Mudug</SelectItem>
-                      <SelectItem value="Karkaar">Karkaar</SelectItem>
-                      <SelectItem value="Sanaag">Sanaag</SelectItem>
-                      <SelectItem value="Sool">Sool</SelectItem>
+                      <SelectItem value="bari">Bari</SelectItem>
+                      <SelectItem value="nugaal">Nugaal</SelectItem>
+                      <SelectItem value="mudug">Mudug</SelectItem>
+                      <SelectItem value="karkaar">Karkaar</SelectItem>
+                      <SelectItem value="sanaag">Sanaag</SelectItem>
+                      <SelectItem value="sool">Sool</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-experience">Experience (Years)</Label>
+                  <Input
+                    id="edit-experience"
+                    type="number"
+                    min="0"
+                    max="50"
+                    value={editingTeacher.experience}
+                    onChange={(e) => setEditingTeacher({...editingTeacher, experience: e.target.value})}
+                    className="ptms-input"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-status">Status</Label>
+                  <Select 
+                    value={editingTeacher.status || 'Active'} 
+                    onValueChange={(value) => setEditingTeacher({...editingTeacher, status: value})}
+                  >
+                    <SelectTrigger className="ptms-input">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Inactive">Inactive</SelectItem>
+                      <SelectItem value="Pending">Pending</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Teaching Subjects */}
               <div className="space-y-2">
-                <Label htmlFor="edit-experience">Experience</Label>
-                <Input
-                  id="edit-experience"
-                  value={editingTeacher.experience}
-                  onChange={(e) => setEditingTeacher({...editingTeacher, experience: e.target.value})}
-                />
+                <Label>Teaching Subjects *</Label>
+                {editingSubjects.map((subject, index) => (
+                  <div key={index} className="flex gap-2 items-end">
+                    <div className="flex-1">
+                      <Select 
+                        value={subject} 
+                        onValueChange={(value) => handleSubjectChange(index, value)}
+                      >
+                        <SelectTrigger className="ptms-input">
+                          <SelectValue placeholder="Select subject" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {getSubjectOptions().map((option) => (
+                            <SelectItem key={option} value={option}>{option}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {editingSubjects.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeSubject(index)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                {editingSubjects.length < 5 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addSubject}
+                    className="mt-2"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Subject
+                  </Button>
+                )}
               </div>
             </div>
           )}
