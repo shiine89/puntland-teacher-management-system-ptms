@@ -197,21 +197,23 @@ const Register = () => {
 
       // Create teacher object
       const teacher = {
-        fullname: formData.fullName,
+        id: Date.now(), // Add unique ID
+        fullName: formData.fullName,
         gender: formData.gender,
         phone: formData.phone,
         email: formData.email,
         education: formData.education,
         experience: formData.experience,
         experienceDetails: formData.experienceDetails,
-        location: formData.region,
+        region: formData.region,
         qualification: formData.qualification === "Other" ? formData.otherQualification : formData.qualification,
         joiningDate: formData.joiningDate,
         subjects: validSubjects,
         majorSubjects: formData.majorSubjects,
         image: imageData,
         cv: cvData,
-        registrationDate: new Date().toISOString().split('T')[0]
+        registrationDate: new Date().toISOString().split('T')[0],
+        status: 'Active'
       };
 
       // Save to localStorage
