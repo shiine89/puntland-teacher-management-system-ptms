@@ -8,8 +8,171 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link rel="stylesheet" href="css/ptms-styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: 'hsl(217, 91%, 60%)',
+                        'primary-foreground': 'hsl(0, 0%, 100%)',
+                        secondary: 'hsl(27, 87%, 67%)',
+                        'secondary-foreground': 'hsl(0, 0%, 100%)',
+                        success: 'hsl(142, 76%, 36%)',
+                        background: 'hsl(0, 0%, 100%)',
+                        foreground: 'hsl(224, 71%, 4%)',
+                        'muted-foreground': 'hsl(215, 16%, 47%)',
+                        muted: 'hsl(210, 40%, 98%)',
+                        card: 'hsl(0, 0%, 100%)',
+                        'card-foreground': 'hsl(224, 71%, 4%)',
+                        border: 'hsl(214, 32%, 91%)',
+                        input: 'hsl(214, 32%, 91%)',
+                        ring: 'hsl(217, 91%, 60%)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .text-gradient-primary {
+            background: linear-gradient(135deg, hsl(217, 91%, 60%), hsl(27, 87%, 67%));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, hsl(217, 91%, 60%), hsl(27, 87%, 67%));
+        }
+        
+        .ptms-card-enhanced {
+            border: 1px solid hsl(214, 32%, 91%);
+            border-radius: 0.75rem;
+            background: hsl(0, 0%, 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            padding: 1.5rem;
+        }
+        
+        .ptms-card-enhanced:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-4px);
+        }
+        
+        .ptms-input-enhanced {
+            border: 1px solid hsl(214, 32%, 91%);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: hsl(0, 0%, 100%);
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+        
+        .ptms-input-enhanced:focus {
+            outline: none;
+            border-color: hsl(217, 91%, 60%);
+            box-shadow: 0 0 0 3px hsla(217, 91%, 60%, 0.1);
+        }
+        
+        .ptms-btn-primary-enhanced {
+            background: hsl(217, 91%, 60%);
+            color: hsl(0, 0%, 100%);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .ptms-btn-primary-enhanced:hover {
+            background: hsl(217, 91%, 55%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px hsla(217, 91%, 60%, 0.4);
+        }
+        
+        .ptms-btn-outline-enhanced {
+            background: transparent;
+            color: hsl(224, 71%, 4%);
+            border: 1px solid hsl(214, 32%, 91%);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .ptms-btn-outline-enhanced:hover {
+            background: hsl(210, 40%, 98%);
+            border-color: hsl(217, 91%, 60%);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .animate-bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounceIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: hsl(0, 0%, 100%);
+            border: 1px solid hsl(214, 32%, 91%);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.error {
+            border-color: hsl(0, 84%, 60%);
+            background: hsl(0, 93%, 94%);
+        }
+        
+        .icon-wrapper {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: hsl(210, 40%, 98%);
+        }
+    </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bg-white">
     <!-- Header -->
     <header class="ptms-header">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
@@ -53,228 +216,306 @@
     </header>
 
     <!-- Main Content -->
-    <div class="max-w-4xl mx-auto px-6 py-8">
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">
-                Contact <span class="text-gradient-primary">Us</span>
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl font-bold text-gray-900 mb-6">
+                Contact <span class="text-gradient-primary">PTMS</span>
             </h1>
-            <p class="text-xl text-gray-600">
-                Get in touch with the PTMS team for support, feedback, or inquiries
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Get in touch with our team for support, inquiries, or feedback about the 
+                Puntland Teacher Management System
             </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Contact Form -->
-            <div class="ptms-card animate-fade-in">
-                <h2 class="text-2xl font-semibold text-gray-900 flex items-center gap-3 mb-6">
-                    <i data-lucide="mail" class="w-6 h-6 text-blue-600"></i>
-                    Send us a Message
-                </h2>
+        <div class="grid lg:grid-cols-2 gap-16">
+            <!-- Contact Information -->
+            <div class="space-y-8">
+                <div class="animate-fade-in">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+                    <p class="text-gray-600 mb-8 text-lg leading-relaxed">
+                        We're here to help you with any questions or concerns about PTMS. 
+                        Choose the best way to reach us below.
+                    </p>
+                </div>
 
-                <form id="contactForm" class="space-y-4">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                            Full Name *
-                        </label>
+                <div class="grid sm:grid-cols-2 gap-6">
+                    <div class="ptms-card-enhanced animate-bounce-in" style="animation-delay: 0s">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-wrapper">
+                                <i data-lucide="mail" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg">Email Address</h3>
+                        </div>
+                        <div class="space-y-2 ml-16">
+                            <p class="text-gray-600">info@ptms.gov.so</p>
+                            <p class="text-gray-600">support@ptms.gov.so</p>
+                        </div>
+                    </div>
+
+                    <div class="ptms-card-enhanced animate-bounce-in" style="animation-delay: 0.1s">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-wrapper">
+                                <i data-lucide="phone" class="w-6 h-6 text-green-600"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg">Phone Numbers</h3>
+                        </div>
+                        <div class="space-y-2 ml-16">
+                            <p class="text-gray-600">+252-90-XXX-XXXX</p>
+                            <p class="text-gray-600">+252-61-XXX-XXXX</p>
+                        </div>
+                    </div>
+
+                    <div class="ptms-card-enhanced animate-bounce-in" style="animation-delay: 0.2s">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-wrapper">
+                                <i data-lucide="map-pin" class="w-6 h-6 text-orange-600"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg">Office Address</h3>
+                        </div>
+                        <div class="space-y-2 ml-16">
+                            <p class="text-gray-600">Ministry of Education</p>
+                            <p class="text-gray-600">Garowe, Puntland State</p>
+                        </div>
+                    </div>
+
+                    <div class="ptms-card-enhanced animate-bounce-in" style="animation-delay: 0.3s">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="icon-wrapper">
+                                <i data-lucide="clock" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-lg">Office Hours</h3>
+                        </div>
+                        <div class="space-y-2 ml-16">
+                            <p class="text-gray-600">Saturday - Thursday</p>
+                            <p class="text-gray-600">8:00 AM - 4:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ptms-card-enhanced bg-blue-50 animate-slide-up">
+                    <div class="flex items-center gap-4 mb-4">
+                        <i data-lucide="message-circle" class="w-8 h-8 text-blue-600"></i>
+                        <h3 class="text-xl font-bold text-gray-900">Need Help?</h3>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        Our support team is available to assist you with technical issues, 
+                        account problems, or general inquiries about the PTMS system.
+                    </p>
+                    <button class="ptms-btn-outline-enhanced w-full">
+                        View Help Documentation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="ptms-card-enhanced animate-fade-in">
+                <div class="border-b border-gray-200 pb-6 mb-6">
+                    <div class="flex items-center gap-4 mb-3">
+                        <i data-lucide="send" class="w-8 h-8 text-blue-600"></i>
+                        <h3 class="text-2xl font-bold text-gray-900">Send us a Message</h3>
+                    </div>
+                    <p class="text-gray-600 text-lg">
+                        Fill out the form below and we'll respond as soon as possible.
+                    </p>
+                </div>
+
+                <form id="contact-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="name" class="block text-sm font-semibold text-gray-700">Full Name *</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your full name"
+                                class="ptms-input-enhanced"
+                                required
+                            />
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="email" class="block text-sm font-semibold text-gray-700">Email Address *</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="your.email@example.com"
+                                class="ptms-input-enhanced"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="subject" class="block text-sm font-semibold text-gray-700">Subject *</label>
                         <input
                             type="text"
-                            id="name"
-                            name="name"
-                            placeholder="Enter your full name"
-                            class="ptms-input"
+                            id="subject"
+                            name="subject"
+                            placeholder="Brief subject of your message"
+                            class="ptms-input-enhanced"
                             required
                         />
                     </div>
 
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address *
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="your.email@example.com"
-                            class="ptms-input"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">
-                            Subject *
-                        </label>
-                        <select id="subject" name="subject" class="ptms-input" required>
-                            <option value="">Select a subject</option>
-                            <option value="support">Technical Support</option>
-                            <option value="feedback">Feedback</option>
-                            <option value="inquiry">General Inquiry</option>
-                            <option value="partnership">Partnership</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
-                            Message *
-                        </label>
+                    <div class="space-y-2">
+                        <label for="message" class="block text-sm font-semibold text-gray-700">Message *</label>
                         <textarea
                             id="message"
                             name="message"
-                            rows="5"
-                            placeholder="Write your message here..."
-                            class="ptms-input resize-vertical"
+                            placeholder="Type your message here..."
+                            class="ptms-input-enhanced resize-vertical"
+                            rows="6"
                             required
                         ></textarea>
                     </div>
 
-                    <button type="submit" class="ptms-btn-primary w-full">
-                        <i data-lucide="send" class="w-5 h-5 mr-2"></i>
+                    <button type="submit" class="ptms-btn-primary-enhanced w-full">
+                        <i data-lucide="send" class="w-5 h-5"></i>
                         Send Message
                     </button>
                 </form>
             </div>
+        </div>
 
-            <!-- Contact Information -->
-            <div class="space-y-6">
-                <div class="ptms-card animate-slide-up">
-                    <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-3 mb-4">
-                        <i data-lucide="map-pin" class="w-6 h-6 text-blue-600"></i>
-                        Our Location
-                    </h3>
-                    <p class="text-gray-600">
-                        Puntland State of Somalia<br>
-                        Garowe, Nugaal Region<br>
-                        Ministry of Education
-                    </p>
-                </div>
-
-                <div class="ptms-card animate-slide-up">
-                    <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-3 mb-4">
-                        <i data-lucide="phone" class="w-6 h-6 text-blue-600"></i>
-                        Contact Numbers
-                    </h3>
-                    <div class="space-y-2">
-                        <p class="text-gray-600">
-                            <strong>Main Office:</strong> +252-90-XXX-XXXX
-                        </p>
-                        <p class="text-gray-600">
-                            <strong>Technical Support:</strong> +252-90-XXX-XXXX
-                        </p>
-                    </div>
-                </div>
-
-                <div class="ptms-card animate-slide-up">
-                    <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-3 mb-4">
-                        <i data-lucide="mail" class="w-6 h-6 text-blue-600"></i>
-                        Email Addresses
-                    </h3>
-                    <div class="space-y-2">
-                        <p class="text-gray-600">
-                            <strong>General:</strong> info@ptms.gov.so
-                        </p>
-                        <p class="text-gray-600">
-                            <strong>Support:</strong> support@ptms.gov.so
-                        </p>
-                        <p class="text-gray-600">
-                            <strong>Admin:</strong> admin@ptms.gov.so
-                        </p>
-                    </div>
-                </div>
-
-                <div class="ptms-card animate-slide-up">
-                    <h3 class="text-xl font-semibold text-gray-900 flex items-center gap-3 mb-4">
-                        <i data-lucide="clock" class="w-6 h-6 text-blue-600"></i>
-                        Office Hours
-                    </h3>
-                    <div class="space-y-2">
-                        <p class="text-gray-600">
-                            <strong>Saturday - Thursday:</strong> 8:00 AM - 4:00 PM
-                        </p>
-                        <p class="text-gray-600">
-                            <strong>Friday:</strong> Closed
-                        </p>
-                        <p class="text-gray-600 text-sm mt-2">
-                            * Emergency support available 24/7
-                        </p>
-                    </div>
+        <!-- Additional Information -->
+        <div class="mt-20 text-center">
+            <div class="ptms-card-enhanced bg-gradient-primary text-white">
+                <h3 class="text-3xl font-bold mb-6">Join the PTMS Community</h3>
+                <p class="text-white/90 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
+                    Stay updated with the latest features, announcements, and educational 
+                    resources by following our official channels.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-6 py-3 rounded-lg font-semibold transition-all">
+                        Subscribe to Newsletter
+                    </button>
+                    <button class="bg-white/10 border border-white/20 text-white hover:bg-white/20 px-6 py-3 rounded-lg font-semibold transition-all">
+                        Follow on Social Media
+                    </button>
                 </div>
             </div>
         </div>
-
-        <!-- FAQ Section -->
-        <section class="mt-16">
-            <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">
-                Frequently Asked <span class="text-gradient-primary">Questions</span>
-            </h2>
-
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="ptms-card animate-bounce-in">
-                    <h3 class="font-semibold text-gray-900 mb-2">How do I register as a teacher?</h3>
-                    <p class="text-gray-600">
-                        Visit our registration page and fill out the complete form with your qualifications, experience, and documents.
-                    </p>
-                </div>
-
-                <div class="ptms-card animate-bounce-in">
-                    <h3 class="font-semibold text-gray-900 mb-2">What documents do I need?</h3>
-                    <p class="text-gray-600">
-                        You need a recent photo, your CV, and certificates of your educational qualifications.
-                    </p>
-                </div>
-
-                <div class="ptms-card animate-bounce-in">
-                    <h3 class="font-semibold text-gray-900 mb-2">How long does registration take?</h3>
-                    <p class="text-gray-600">
-                        Registration is instant. However, verification and approval may take 2-3 business days.
-                    </p>
-                </div>
-
-                <div class="ptms-card animate-bounce-in">
-                    <h3 class="font-semibold text-gray-900 mb-2">Can I update my information?</h3>
-                    <p class="text-gray-600">
-                        Yes, you can contact our support team to update your profile information at any time.
-                    </p>
-                </div>
-            </div>
-        </section>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-blue-600 text-white text-center py-4 mt-16">
-        <div class="max-w-7xl mx-auto">
-            <p>&copy; 2025 PTMS - All Rights Reserved | Puntland Teacher Management System</p>
+    <footer class="bg-gray-900 text-white mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="graduation-cap" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-xl font-bold">PTMS</h3>
+                        <p class="text-sm text-gray-400">Puntland Teacher Management System</p>
+                    </div>
+                </div>
+                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+                    Empowering education through efficient teacher management and development in Puntland State of Somalia.
+                </p>
+                <div class="border-t border-gray-800 pt-6">
+                    <p class="text-sm text-gray-400">
+                        © 2025 Puntland Teacher Management System. All rights reserved.
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- Toast notification -->
-    <div id="toast" class="toast"></div>
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
 
     <script src="js/ptms-common.js"></script>
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Enhanced toast notification system
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${isError ? 'error' : ''}`;
             
-            // Get form data
-            const formData = new FormData(this);
-            const contactData = {
+            toast.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <i data-lucide="${isError ? 'alert-circle' : 'check-circle'}" class="w-6 h-6 ${isError ? 'text-red-600' : 'text-green-600'} flex-shrink-0"></i>
+                    <div class="flex-1">
+                        <div class="font-semibold ${isError ? 'text-red-900' : 'text-gray-900'}">
+                            ${isError ? 'Error' : 'Success'}
+                        </div>
+                        <div class="text-sm ${isError ? 'text-red-700' : 'text-gray-600'} mt-1">
+                            ${message}
+                        </div>
+                    </div>
+                    <button onclick="this.closest('.toast').remove()" class="text-gray-400 hover:text-gray-600 flex-shrink-0">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('toast-container').appendChild(toast);
+            lucide.createIcons();
+
+            // Show toast
+            setTimeout(() => toast.classList.add('show'), 100);
+
+            // Auto remove after 6 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 6000);
+        }
+
+        // Enhanced contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = {
                 name: formData.get('name'),
                 email: formData.get('email'),
                 subject: formData.get('subject'),
-                message: formData.get('message'),
-                timestamp: new Date().toISOString()
+                message: formData.get('message')
             };
 
-            // Save to localStorage (in a real app, this would be sent to a server)
-            const contacts = JSON.parse(localStorage.getItem('contacts') || '[]');
-            contacts.push(contactData);
-            localStorage.setItem('contacts', JSON.stringify(contacts));
+            // Validate required fields
+            const requiredFields = ['name', 'email', 'subject', 'message'];
+            const missingFields = requiredFields.filter(field => !data[field] || !data[field].trim());
+
+            if (missingFields.length > 0) {
+                showToast('Please fill in all required fields.', true);
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                showToast('Please enter a valid email address.', true);
+                return;
+            }
+
+            // Save to localStorage (in real app, this would be sent to server)
+            const contacts = JSON.parse(localStorage.getItem('ptms_contacts') || '[]');
+            contacts.push({
+                ...data,
+                timestamp: new Date().toISOString(),
+                id: Date.now()
+            });
+            localStorage.setItem('ptms_contacts', JSON.stringify(contacts));
 
             // Show success message
-            showToast('Message sent successfully! We will get back to you soon.');
-            
+            showToast('Thank you for contacting us. We\'ll get back to you soon!');
+
             // Reset form
-            this.reset();
+            e.target.reset();
+        });
+
+        // Add animation delays on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.animate-bounce-in');
+            animateElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
         });
     </script>
 </body>
