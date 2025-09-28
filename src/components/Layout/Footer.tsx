@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Linkedin, Instagram, Mail } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Instagram, Mail, MessageCircle } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -41,6 +41,15 @@ const Footer = () => {
             aria-label="Follow us on Instagram"
           >
             <Instagram className="w-6 h-6" />
+          </a>
+          <a
+            href="https://wa.me/252123456789"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-primary transition-colors duration-300"
+            aria-label="Contact us on WhatsApp"
+          >
+            <MessageCircle className="w-6 h-6" />
           </a>
           <a
             href="mailto:info@ptms.so"
