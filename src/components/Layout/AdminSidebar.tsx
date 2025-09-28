@@ -29,11 +29,11 @@ const AdminSidebar = () => {
     <aside className="ptms-sidebar w-64 p-4">
       <div className="flex items-center gap-3 mb-8">
         <GraduationCap className="w-8 h-8 text-primary" />
-        <h2 className="text-xl font-bold text-white">PTMS Admin</h2>
+        <h2 className="text-xl font-bold text-sky-300">PTMS Admin</h2>
       </div>
 
       <Link to="/" className="block mb-6">
-        <div className="flex items-center gap-2 text-white/80 hover:text-white transition-colors p-2 rounded hover:bg-white/10">
+        <div className="flex items-center gap-2 text-sky-300/80 hover:text-sky-300 transition-colors p-2 rounded hover:bg-white/10">
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm">Back to Home</span>
         </div>
