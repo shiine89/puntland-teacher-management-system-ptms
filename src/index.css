@@ -32,6 +32,10 @@
     --success-foreground: 0 0% 100%;
     --success-light: 152 69% 85%; /* #d5f8e8 */
 
+    /* Warning Yellow/Orange */
+    --warning: 38 92% 50%; /* #f59e0b */
+    --warning-foreground: 0 0% 100%;
+
     /* Muted colors */
     --muted: 220 14% 96%; /* #f4f6f9 */
     --muted-foreground: 215 16% 47%; /* #666 */

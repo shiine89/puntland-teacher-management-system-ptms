@@ -12,6 +12,10 @@ import {
   Star
 } from "lucide-react";
 import ptmsHero from "@/assets/ptms-hero.jpg";
+import universityNews from "@/assets/university-news.jpg";
+import schoolNews from "@/assets/school-news.jpg";
+import comingFeatures from "@/assets/coming-features.jpg";
+import ptmsEvents from "@/assets/ptms-events.jpg";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -212,6 +216,115 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* News Section */}
+      <section className="py-16 bg-muted">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center text-primary mb-12">
+            Wararka Ugu Dambeeya ee PTMS
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* University News */}
+            <Card className="ptms-card group h-full flex flex-col">
+              <CardHeader className="p-0">
+                <img
+                  src={universityNews}
+                  alt="University News"
+                  className="w-full h-48 object-cover rounded-t-lg"
+                />
+              </CardHeader>
+              <CardContent className="p-6 flex-1 flex flex-col">
+                <CardTitle className="text-success mb-3">
+                  Wararka Jaamacadaha
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mb-4 flex-1">
+                  La soco wararkii ugu dambeeyay ee jaamacadaha Puntland, oo ay ka mid yihiin fursadaha shaqo, iskaashi cusub, iyo tababaro la xiriira tayeynta waxbarashada sare.
+                </CardDescription>
+                <Button className="ptms-btn-primary w-full group-hover:shadow-lg transition-shadow">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* School News */}
+            <Card className="ptms-card group h-full flex flex-col">
+              <CardHeader className="p-0">
+                <img
+                  src={schoolNews}
+                  alt="School News"
+                  className="w-full h-48 object-cover rounded-t-lg"
+                />
+              </CardHeader>
+              <CardContent className="p-6 flex-1 flex flex-col">
+                <CardTitle className="text-warning mb-3">
+                  Wararka Dugsiyada
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mb-4 flex-1">
+                  Dugsiyo badan ayaa bilaabay inay soo bandhigaan fursado shaqo, qorista macalimiin cusub iyo horumarinta manhajka. La soco wararka dugsiyada si aad u hesho fursado cusub.
+                </CardDescription>
+                <Button className="ptms-btn-primary w-full group-hover:shadow-lg transition-shadow">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Features Coming Soon */}
+            <Card className="ptms-card group h-full flex flex-col">
+              <CardHeader className="p-0">
+                <img
+                  src={comingFeatures}
+                  alt="Features Coming"
+                  className="w-full h-48 object-cover rounded-t-lg"
+                />
+              </CardHeader>
+              <CardContent className="p-6 flex-1 flex flex-col">
+                <CardTitle className="text-primary mb-3">
+                  Features Cusub oo Soo Socda!
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mb-4 flex-1">
+                  <p className="mb-2">Waxaan ku faraxsanahay inaan dhawaan kusoo kordhin doono:</p>
+                  <ul className="list-disc list-inside space-y-1 text-sm">
+                    <li>Mobile App rasmi ah (Android & iOS)</li>
+                    <li>Module gaar ah oo loogu talagalay isku-xirka shaqaalaha iyo hay'adaha</li>
+                    <li>Premier Features – warbixinno gaar ah, PDF export, iyo statistik tayo sare leh</li>
+                  </ul>
+                </CardDescription>
+                <Button className="ptms-btn-primary w-full group-hover:shadow-lg transition-shadow">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* PTMS Events */}
+            <Card className="ptms-card group h-full flex flex-col">
+              <CardHeader className="p-0">
+                <img
+                  src={ptmsEvents}
+                  alt="PTMS Events"
+                  className="w-full h-48 object-cover rounded-t-lg"
+                />
+              </CardHeader>
+              <CardContent className="p-6 flex-1 flex flex-col">
+                <CardTitle className="text-destructive mb-3">
+                  Dhacdooyinka PTMS
+                </CardTitle>
+                <CardDescription className="text-muted-foreground mb-4 flex-1">
+                  <p className="mb-2">La soco dhacdooyinka muhiimka ah ee PTMS sida:</p>
+                  <ul className="list-disc list-inside space-y-1 text-sm">
+                    <li>Seminaarro iyo tababaro</li>
+                    <li>Daah-furka platform-ka rasmiga ah</li>
+                    <li>Shirarka horumarinta waxbarashada Puntland</li>
+                  </ul>
+                </CardDescription>
+                <Button className="ptms-btn-primary w-full group-hover:shadow-lg transition-shadow">
+                  Learn More
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
