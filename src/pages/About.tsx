@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import ptmsAbout from "@/assets/ptms-about.jpg";
-import ptmsTeam from "@/assets/ptms-team.jpg";
+import abdisamedProfile from "@/assets/abdisamed-profile.jpg";
+import abdilaahiProfile from "@/assets/abdilaahi-profile.jpg";
 
 const About = () => {
   const [openFeature, setOpenFeature] = useState<number | null>(null);
@@ -80,13 +81,13 @@ const About = () => {
       name: "Abdisamed Abdirhman (Wadayste)",
       role: "Front-end Developer/Analysis",
       description: "Front-End Developer and Analyst skilled in designing modern, responsive web interfaces and analyzing user and business requirements. Experienced with HTML, CSS, JavaScript, and UI frameworks.",
-      image: ptmsTeam
+      image: abdisamedProfile
     },
     {
       name: "Abdilaahi Abdirashid Ali (Shiine)",
       role: "UI Developer/Back-end",
       description: "UI Developer skilled in designing and developing interactive, user-friendly web interfaces. Back-End Developer experienced in building and maintaining robust server-side applications.",
-      image: ptmsTeam
+      image: abdilaahiProfile
     }
   ];
 
