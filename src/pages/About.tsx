@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import ptmsAbout from "@/assets/ptms-about.jpg";
-import ptmsTeam from "@/assets/ptms-team.jpg";
+import abdisamedProfile from "@/assets/abdisamed-profile.jpg";
+import abdilaahiProfile from "@/assets/abdilaahi-profile.jpg";
 
 const About = () => {
   const [openFeature, setOpenFeature] = useState<number | null>(null);
