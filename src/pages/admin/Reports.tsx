@@ -333,7 +333,7 @@ const Reports = () => {
         </CardHeader>
 
         <CardContent>
-          <div className="grid md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="space-y-2">
               <Label htmlFor="reportType">Report Type</Label>
               <Select value={dateFilter.reportType} onValueChange={(value) => handleDateChange('reportType', value)}>
