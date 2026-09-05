@@ -88,7 +88,7 @@ const About = () => {
             </div>
             
             <div className="animate-slide-up order-1 lg:order-2">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4 sm:mb-6">
+              <h1 className="text-2xl sm:text-3xl lg:text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 sm:mb-6">
                 About <span className="text-gradient-primary">PTMS</span>
               </h1>
               
@@ -131,7 +131,7 @@ const About = () => {
       <section className="py-8 sm:py-12 lg:py-16 bg-success-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-success mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-2xl sm:text-3xl md:text-4xl font-bold text-success mb-4">
               Caqabadaha & Xalka PTMS
             </h2>
           </div>
@@ -163,7 +163,7 @@ const About = () => {
       {/* Mission & Vision */}
       <section className="py-8 sm:py-12 lg:py-16 bg-gradient-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-white mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-2xl sm:text-3xl md:text-4xl font-bold text-center text-white mb-8 sm:mb-12">
             Hadafka & Himilada PTMS
           </h2>
           

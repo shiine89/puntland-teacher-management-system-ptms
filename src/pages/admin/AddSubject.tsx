@@ -81,7 +81,7 @@ const AddSubject = () => {
           <Plus className="w-6 h-6 text-success" />
         </div>
         <div>
-          <h1 className="text-4xl font-bold text-foreground">Add Subject</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Add Subject</h1>
           <p className="text-muted-foreground">Create a new subject for teacher specialization</p>
         </div>
       </div>

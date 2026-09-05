@@ -295,7 +295,7 @@ const AddTeacher = () => {
           <UserPlus className="w-6 h-6 text-primary" />
         </div>
         <div>
-          <h1 className="text-4xl font-bold text-foreground">Add Teacher</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Add Teacher</h1>
           <p className="text-muted-foreground">Register a new teacher in the system</p>
         </div>
       </div>

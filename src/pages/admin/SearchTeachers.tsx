@@ -155,7 +155,7 @@ const SearchTeachers = () => {
           <Search className="w-6 h-6 text-secondary" />
         </div>
         <div>
-          <h1 className="text-4xl font-bold text-foreground">Search Teachers</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Search Teachers</h1>
           <p className="text-muted-foreground">Find teachers by name, subject, or other criteria</p>
         </div>
       </div>

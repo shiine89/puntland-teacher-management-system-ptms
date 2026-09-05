@@ -104,7 +104,7 @@ const ManageSubjects = () => {
             <Book className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold text-foreground">Manage Subjects</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Manage Subjects</h1>
             <p className="text-muted-foreground">View and manage all subjects in the system</p>
           </div>
         </div>
