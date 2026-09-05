@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/collapsible";
 import { useState } from "react";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ onNavigate }: { onNavigate?: () => void }) => {
   const location = useLocation();
   const [subjectsOpen, setSubjectsOpen] = useState(false);
   const [teachersOpen, setTeachersOpen] = useState(false);
@@ -26,7 +26,12 @@ const AdminSidebar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <aside className="ptms-sidebar w-64 p-4">
+    <aside
+      className="ptms-sidebar w-64 p-4 h-full min-h-screen overflow-y-auto"
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("a")) onNavigate?.();
+      }}
+    >
       <div className="flex items-center gap-3 mb-8">
         <GraduationCap className="w-8 h-8 text-primary" />
         <h2 className="text-xl font-bold text-gray-800">PTMS Admin</h2>
