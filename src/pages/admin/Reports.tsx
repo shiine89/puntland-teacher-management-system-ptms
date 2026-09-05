@@ -318,7 +318,7 @@ const Reports = () => {
           <FileText className="w-6 h-6 text-primary" />
         </div>
         <div>
-          <h1 className="text-4xl font-bold text-foreground">Reports</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Reports</h1>
           <p className="text-muted-foreground">Generate and export system reports</p>
         </div>
       </div>
@@ -333,7 +333,7 @@ const Reports = () => {
         </CardHeader>
 
         <CardContent>
-          <div className="grid md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="space-y-2">
               <Label htmlFor="reportType">Report Type</Label>
               <Select value={dateFilter.reportType} onValueChange={(value) => handleDateChange('reportType', value)}>

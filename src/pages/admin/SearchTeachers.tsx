@@ -155,7 +155,7 @@ const SearchTeachers = () => {
           <Search className="w-6 h-6 text-secondary" />
         </div>
         <div>
-          <h1 className="text-4xl font-bold text-foreground">Search Teachers</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Search Teachers</h1>
           <p className="text-muted-foreground">Find teachers by name, subject, or other criteria</p>
         </div>
       </div>
@@ -170,7 +170,7 @@ const SearchTeachers = () => {
         </CardHeader>
 
         <CardContent>
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="space-y-2">
               <Label htmlFor="name">Teacher Name</Label>
               <Input

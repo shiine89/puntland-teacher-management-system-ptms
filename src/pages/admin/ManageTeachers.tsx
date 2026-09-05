@@ -198,7 +198,7 @@ const ManageTeachers = () => {
             <Users className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold text-foreground">Manage Teachers</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Manage Teachers</h1>
             <p className="text-muted-foreground">View and manage all registered teachers</p>
           </div>
         </div>
@@ -411,7 +411,7 @@ const ManageTeachers = () => {
           
           {editingTeacher && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-fullName">Full Name *</Label>
                   <Input
@@ -439,7 +439,7 @@ const ManageTeachers = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-phone">Phone *</Label>
                   <Input
@@ -463,7 +463,7 @@ const ManageTeachers = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-education">Education Level *</Label>
                   <Select 
@@ -502,7 +502,7 @@ const ManageTeachers = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-experience">Experience (Years)</Label>
                   <Input

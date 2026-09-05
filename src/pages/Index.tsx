@@ -49,11 +49,11 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-primary overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="relative py-12 sm:py-16 md:py-20 bg-gradient-primary overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                 Puntland Teacher
                 <br />
                 <span className="text-yellow-300">Management System</span>
@@ -95,8 +95,8 @@ const Index = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-10 sm:py-16 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <Card key={index} className="ptms-card text-center animate-bounce-in" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -112,10 +112,10 @@ const Index = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-10 sm:py-16 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
               Why Choose <span className="text-gradient-primary">PTMS</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -147,11 +147,11 @@ const Index = () => {
       </section>
 
       {/* Features Highlight */}
-      <section className="py-16 bg-primary/5">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-10 sm:py-16 bg-primary/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
-              <h2 className="text-4xl font-bold text-foreground mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-6">
                 Comprehensive Teacher
                 <br />
                 <span className="text-gradient-primary">Management Features</span>
@@ -221,9 +221,9 @@ const Index = () => {
       </section>
 
       {/* News Section */}
-      <section className="py-16 bg-muted">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-primary mb-12">
+      <section className="py-10 sm:py-16 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-primary mb-12">
             Wararka Ugu Dambeeya ee PTMS
           </h2>
           
@@ -330,9 +330,9 @@ const Index = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 bg-gradient-primary">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
+      <section className="py-10 sm:py-16 bg-gradient-primary">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Transform Education Management?
           </h2>
           <p className="text-xl text-white/90 mb-8">
